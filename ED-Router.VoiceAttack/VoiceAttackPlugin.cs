@@ -11,6 +11,8 @@ namespace ED_Router.VoiceAttack
 {
 	public class VoiceAttackPlugin
 	{
+		private static MainWindow window = null;
+
 		public static string VA_DisplayName()
 		{
 			return "VoiceAttack ED-Router Plugin";  //a name to distinguish my plugin from others
@@ -32,7 +34,14 @@ namespace ED_Router.VoiceAttack
 
 		public static void VA_Exit1(dynamic vaProxy)
 		{
-			//no need to do anything on exit with this implementation
+			if (window != null)
+			{
+				try
+				{
+					window.Dispatcher.BeginInvoke((Action)window.Close);
+				}
+				catch (Exception) { }
+			}
 		}
 
 		public static void VA_StopCommand()
@@ -42,44 +51,74 @@ namespace ED_Router.VoiceAttack
 
 		public static void VA_Invoke1(dynamic vaProxy)
 		{
-			string context = vaProxy.Context;
-
-			switch (context)
+			try
 			{
-				case "next_waypoint":
-					var next = EdRouter.Instance.NextWaypoint();
-					vaProxy.SetText("next_waypoint", next.System);
-					break;
-				case "prev_waypoint":
-					var prev = EdRouter.Instance.PreviousWaypoint();
-					vaProxy.SetText("prev_waypoint", prev.System);
-					break;
-				case "open_gui":
-					InvokeConfiguration();
-					break;
-				case "calculate_route":
-					EdRouter.Instance.CalculateRoute();
-					break;
-				default:
-					break;
+				string context = vaProxy.Context;
+
+				switch (context)
+				{
+					case "next_waypoint":
+						var next = EdRouter.Instance.NextWaypoint();
+						vaProxy.SetText("next_waypoint", next.System);
+						break;
+					case "prev_waypoint":
+						var prev = EdRouter.Instance.PreviousWaypoint();
+						vaProxy.SetText("prev_waypoint", prev.System);
+						break;
+					case "open_gui":
+						InvokeConfiguration();
+						break;
+					case "calculate_route":
+						EdRouter.Instance.CalculateRoute();
+						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps);
+						break;
+					default:
+						break;
+				}
+				WaypointToClipboard();
+			}
+			catch (Exception ex)
+			{
+				vaProxy.WriteToLog("Error from ED-Router: " + ex.Message, "red");
 			}
 		}
 
 		private static void InvokeConfiguration()
 		{
-			Thread thread = new Thread(() =>
+			if (window == null)
 			{
-					MainWindow window = new MainWindow();
-					window.ShowDialog();
+				Thread configThread = new Thread(() =>
+				{
+					try
+					{
+						window = new MainWindow();
+						window.ShowDialog();
+						window = null;
+					}
+					catch(Exception ex) {
+						
+					}
 
-			});
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
+				});
+				configThread.SetApartmentState(ApartmentState.STA);
+				configThread.Start();
+			}
 		}
 
 		private static void WaypointToClipboard()
 		{
-			Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.System);
+			Thread copyThread = new Thread(() =>
+			{
+				try
+				{
+					Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.System);
+				}
+				catch (Exception)
+				{ }
+
+			});
+			copyThread.SetApartmentState(ApartmentState.STA);
+			copyThread.Start();
 		}
 	}
 }
