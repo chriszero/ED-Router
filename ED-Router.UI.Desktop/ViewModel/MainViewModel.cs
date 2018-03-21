@@ -46,6 +46,8 @@ namespace ED_Router.UI.Desktop.ViewModel
 			MyRoute = new ObservableCollection<SystemJump>();
 			From = new ObservableCollection<string>();
 			To = new ObservableCollection<string>();
+			_fromSearch = Router.Start;
+			_toSearch = Router.Destination;
 		}
 
 		public ICommand CalculateCommand { get; private set; }
@@ -84,6 +86,12 @@ namespace ED_Router.UI.Desktop.ViewModel
 						if (suggestionSystems.Contains(sys) == false)
 							From.Remove(sys);
 					}
+
+					// pass the Name to the underlying router
+					if (suggestionSystems.Contains(value))
+					{
+						Router.Destination = value;
+					}
 				}
 			}
 		}
@@ -112,6 +120,12 @@ namespace ED_Router.UI.Desktop.ViewModel
 					{
 						if (suggestionSystems.Contains(sys) == false)
 							To.Remove(sys);
+					}
+
+					// pass the Name to the underlying router
+					if (suggestionSystems.Contains(value))
+					{
+						Router.Destination = value;
 					}
 				}
 			}
