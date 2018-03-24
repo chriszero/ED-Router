@@ -46,7 +46,7 @@ namespace ED_Router
 			{
 				fileInfo = FindLatestFile(Directory, Filter);
 			}
-			catch (NotSupportedException nsex)
+			catch (NotSupportedException)
 			{
 				//Logging.Error("Directory " + Directory + " not supported: ", nsex);
 			}
@@ -76,7 +76,7 @@ namespace ED_Router
 				fileInfo = FindLatestFile(Directory, Filter);
 				if (fileInfo == null || fileInfo.Name != lastName)
 				{
-					lastName = fileInfo == null ? null : fileInfo.Name;
+					lastName = fileInfo?.Name;
 					lastSize = 0;
 					if (fileInfo != null)
 					{

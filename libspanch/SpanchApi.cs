@@ -47,6 +47,11 @@ namespace libspanch
             routeRequest.AddParameter("job", response.Job, ParameterType.UrlSegment);
 
             var routeResponse = Execute<RequestResult<Route>>(routeRequest);
+			if(routeResponse.Error != null)
+			{
+				throw new RouteException(routeResponse.Error);
+			}
+
             while (routeResponse.Status.ToLower() == "queued")
             {
                 routeResponse = Execute<RequestResult<Route>>(routeRequest);

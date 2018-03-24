@@ -43,11 +43,6 @@ namespace ED_Router
 			LoadSettings();
 		}
 
-		private EdRouter(bool justLoadSettings)
-		{
-
-		}
-
 		private void _jMon_NewLocation(string obj)
 		{
 			Start = obj;
@@ -56,8 +51,23 @@ namespace ED_Router
 		private SpanchApi _api;
 		private int _currentWaypoint;
 		private JournalMonitor _jMon;
+		private string _destination;
+		private double _range;
+		private int _efficiency;
+		private Route _route;
+		private SystemJump _currentWaypoint1;
 
-		public Route Route { get; set; }
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public Route Route
+		{
+			get => _route;
+			set
+			{
+				_route = value;
+				OnPropertyChanged("Route");
+			}
+		}
 
 
 		private string _start;
@@ -66,28 +76,28 @@ namespace ED_Router
 			get { return _start; }
 			set
 			{
+				if (_start == value)
+					return;
+
 				var list = _api.GetSystems(value);
 				if (list.Contains(value))
 					_start = value;
 				else
 					_start = string.Empty;
 
-				PropertyChanged(this, new PropertyChangedEventArgs("Start"));
+				OnPropertyChanged("Start");
 				SaveSettings();
 			}
 		}
-
-		private string _destination;
-		private double _range;
-		private int _efficiency;
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		public string Destination
 		{
 			get { return _destination; }
 			set
 			{
+				if (_destination == value)
+					return;
+
 				var list = _api.GetSystems(value);
 				if (list.Contains(value))
 					_destination = value;
@@ -95,6 +105,7 @@ namespace ED_Router
 					_destination = string.Empty;
 
 				SaveSettings();
+				OnPropertyChanged("Destination");
 			}
 		}
 
@@ -103,8 +114,12 @@ namespace ED_Router
 			get => _range;
 			set
 			{
+				if (_range == value)
+					return;
+
 				_range = value;
 				SaveSettings();
+				OnPropertyChanged("Range");
 			}
 		}
 
@@ -113,8 +128,12 @@ namespace ED_Router
 			get => _efficiency;
 			set
 			{
+				if (_efficiency == value)
+					return;
+
 				_efficiency = value;
 				SaveSettings();
+				OnPropertyChanged("Efficiency");
 			}
 		}
 
@@ -159,7 +178,18 @@ namespace ED_Router
 			return CurrentWaypoint;
 		}
 
-		public SystemJump CurrentWaypoint { get; private set; }
+		public SystemJump CurrentWaypoint
+		{
+			get => _currentWaypoint1;
+			private set
+			{
+				if (_currentWaypoint1 == value)
+					return;
+
+				_currentWaypoint1 = value;
+				OnPropertyChanged("CurrentWaypoint");
+			}
+		}
 
 		public List<string> GetSystems(string value)
 		{
@@ -204,6 +234,12 @@ namespace ED_Router
 			}
 			catch (Exception) { }
 
+		}
+
+		// Create the OnPropertyChanged method to raise the event
+		protected void OnPropertyChanged(string name)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 		}
 	}
 }

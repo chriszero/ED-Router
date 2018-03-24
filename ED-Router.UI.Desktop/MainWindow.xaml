@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="From" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="38"/>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="301" Margin="10,10,0,0" VerticalAlignment="Top" Width="615" ItemsSource="{Binding MyRoute}" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False" SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}"/>
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="301" Margin="10,10,0,0" VerticalAlignment="Top" Width="615" ItemsSource="{Binding Router.Route.SystemJumps}" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False" SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}" RowDetailsVisibilityMode="Visible"/>
         <Label Content="To" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="26" Width="38"/>
         <Label Content="Range (LY)" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Height="26" Width="108"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="140,70,0,0" TextWrapping="Wrap" Text="{Binding Router.Range}" VerticalAlignment="Top" Width="66"/>

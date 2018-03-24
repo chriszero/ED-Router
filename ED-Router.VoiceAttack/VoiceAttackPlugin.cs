@@ -59,10 +59,12 @@ namespace ED_Router.VoiceAttack
 				{
 					case "next_waypoint":
 						var next = EdRouter.Instance.NextWaypoint();
+						vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
 						vaProxy.SetText("next_waypoint", next.System);
 						break;
 					case "prev_waypoint":
 						var prev = EdRouter.Instance.PreviousWaypoint();
+						vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
 						vaProxy.SetText("prev_waypoint", prev.System);
 						break;
 					case "open_gui":
@@ -70,7 +72,7 @@ namespace ED_Router.VoiceAttack
 						break;
 					case "calculate_route":
 						EdRouter.Instance.CalculateRoute();
-						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps);
+						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps.ToString());
 						break;
 					default:
 						break;

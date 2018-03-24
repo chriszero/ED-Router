@@ -43,11 +43,16 @@ namespace ED_Router.UI.Desktop.ViewModel
 			CopyToClipboardCommand = new RelayCommand(WaypointToClipboard);
 
 			Router = EdRouter.Instance;
-			MyRoute = new ObservableCollection<SystemJump>();
+			Router.PropertyChanged += Router_PropertyChanged;
 			From = new ObservableCollection<string>();
 			To = new ObservableCollection<string>();
 			_fromSearch = Router.Start;
 			_toSearch = Router.Destination;
+		}
+
+		private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			RaisePropertyChanged();
 		}
 
 		public ICommand CalculateCommand { get; private set; }
@@ -139,11 +144,6 @@ namespace ED_Router.UI.Desktop.ViewModel
 			try
 			{
 				Router.CalculateRoute();
-				MyRoute.Clear();
-				foreach (var jump in Router.Route.SystemJumps)
-				{
-					MyRoute.Add(jump);
-				}
 			}
 			catch (System.Exception ex)
 			{
