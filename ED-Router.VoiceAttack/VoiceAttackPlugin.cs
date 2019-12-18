@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using ED_Router.UI.Desktop.Services;
 
 namespace ED_Router.VoiceAttack
 {
@@ -31,20 +32,39 @@ namespace ED_Router.VoiceAttack
 
 		public static void VA_Init1(dynamic vaProxy)
 		{
-		}
+            var configThread = new Thread(Dispatcher.Run);
+            configThread.SetApartmentState(ApartmentState.STA);
+            configThread.Start();
+
+            for (var i = 0; i < 10; i++)
+            {
+                var dispatcher = Dispatcher.FromThread(configThread);
+
+                if (dispatcher != null)
+                {
+                    dispatcher.Invoke(() =>
+                    {
+                        window = new MainWindow();
+                    });
+
+                    break;
+                }
+
+                Thread.Sleep(TimeSpan.FromMilliseconds(500));
+            }
+
+            EdRouter.Dispatcher = new DispatcherAccessor(window.Dispatcher);
+
+            vaProxy.WriteToLog($"{VA_DisplayName()} ready!", "green");
+        }
 
 		public static void VA_Exit1(dynamic vaProxy)
 		{
-			if (window != null)
-			{
-				try
-				{
-					window.Dispatcher.BeginInvoke((Action)window.Close);
-                    window.Dispatcher.InvokeShutdown();
-                }
-				catch (Exception) { }
-			}
-		}
+            window?.Dispatcher?.BeginInvoke((Action)window.Close);
+            (EdRouter.Dispatcher as IDisposable)?.Dispose();
+            window?.Dispatcher?.InvokeShutdown();
+            window = null;
+        }
 
 		public static void VA_StopCommand()
 		{
@@ -89,40 +109,12 @@ namespace ED_Router.VoiceAttack
 
 		private static void InvokeConfiguration()
 		{
-			if (window == null)
-            {
-                var configThread = new Thread(() =>
-                {
-                    try
-                    {
-                        window = new MainWindow();
-                        window.Show();
-
-                        // We make a dispatcher for ED-Runner so that we do not block EDDI or VoiceAttack when we do ComputeRoute.
-                        Dispatcher.Run();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                        if (ex.InnerException != null)
-                        {
-                            MessageBox.Show(ex.InnerException.Message);
-                        }
-                    }
-
-                });
-                configThread.SetApartmentState(ApartmentState.STA);
-                configThread.Start();
-            }
-            else
-            {
-                window.Dispatcher.Invoke(() => window.Show());
-            }
-		}
+            window?.Dispatcher?.Invoke(() => window.Show());
+        }
 
 		private static void WaypointToClipboard()
 		{
-			Thread copyThread = new Thread(() =>
+			var copyThread = new Thread(() =>
 			{
 				try
 				{

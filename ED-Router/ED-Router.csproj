@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdRouter.cs" />
+    <Compile Include="IDispatcherAccessor.cs" />
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

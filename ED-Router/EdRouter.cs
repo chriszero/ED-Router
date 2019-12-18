@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using libspanch;
 using Newtonsoft.Json;
@@ -12,8 +13,8 @@ using Newtonsoft.Json.Linq;
 namespace ED_Router
 {
 	public class EdRouter : INotifyPropertyChanged
-	{
-
+    {
+        public static IDispatcherAccessor Dispatcher;
 		private static readonly EdRouter _instance = new EdRouter();
 		private static string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
 		public static EdRouter Instance
@@ -150,7 +151,9 @@ namespace ED_Router
 				}
 			}
 			else
-				throw new Exception("Start or Destination is empty.");
+            {
+                throw new Exception("Start or Destination is empty.");
+            }
 		}
 
 		public string GetCurrentSystem()
@@ -239,7 +242,7 @@ namespace ED_Router
 		// Create the OnPropertyChanged method to raise the event
 		protected void OnPropertyChanged(string name)
 		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
 		}
 	}
 }
