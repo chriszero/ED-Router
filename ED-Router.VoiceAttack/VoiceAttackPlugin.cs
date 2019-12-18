@@ -1,10 +1,6 @@
 ﻿using ED_Router.UI.Desktop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using ED_Router.UI.Desktop.Services;
@@ -51,6 +47,12 @@ namespace ED_Router.VoiceAttack
                 }
 
                 Thread.Sleep(TimeSpan.FromMilliseconds(500));
+            }
+
+            if (window == null)
+            {
+                vaProxy.WriteToLog($"{VA_DisplayName()} did not correctly load.", "red");
+                return;
             }
 
             EdRouter.Dispatcher = new DispatcherAccessor(window.Dispatcher);
