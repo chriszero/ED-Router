@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ED_Router.UI.Desktop.Services;
 
 namespace ED_Router.UI.Desktop
 {
@@ -18,5 +19,12 @@ namespace ED_Router.UI.Desktop
 			MessageBox.Show("An unhandled exception just occurred: " + e.Exception.Message, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
 			e.Handled = true;
 		}
-	}
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            EdRouter.Dispatcher = new DispatcherAccessor(Current.Dispatcher);
+        }
+    }
 }
