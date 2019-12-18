@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NHotkey;
+using NHotkey.Wpf;
 
 namespace ED_Router.UI.Desktop
 {
@@ -24,5 +27,15 @@ namespace ED_Router.UI.Desktop
         {
             InitializeComponent();
         }
-	}
+
+        private KeyGestureConverter _converter = new KeyGestureConverter();
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
+
+            base.OnClosing(e);
+        }
+    }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace ED_Router.VoiceAttack
 {
@@ -39,7 +40,8 @@ namespace ED_Router.VoiceAttack
 				try
 				{
 					window.Dispatcher.BeginInvoke((Action)window.Close);
-				}
+                    window.Dispatcher.InvokeShutdown();
+                }
 				catch (Exception) { }
 			}
 		}
@@ -88,23 +90,34 @@ namespace ED_Router.VoiceAttack
 		private static void InvokeConfiguration()
 		{
 			if (window == null)
-			{
-				Thread configThread = new Thread(() =>
-				{
-					try
-					{
-						window = new MainWindow();
-						window.ShowDialog();
-						window = null;
-					}
-					catch(Exception ex) {
-						
-					}
+            {
+                var configThread = new Thread(() =>
+                {
+                    try
+                    {
+                        window = new MainWindow();
+                        window.Show();
 
-				});
-				configThread.SetApartmentState(ApartmentState.STA);
-				configThread.Start();
-			}
+                        // We make a dispatcher for ED-Runner so that we do not block EDDI or VoiceAttack when we do ComputeRoute.
+                        Dispatcher.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            MessageBox.Show(ex.InnerException.Message);
+                        }
+                    }
+
+                });
+                configThread.SetApartmentState(ApartmentState.STA);
+                configThread.Start();
+            }
+            else
+            {
+                window.Dispatcher.Invoke(() => window.Show());
+            }
 		}
 
 		private static void WaypointToClipboard()
