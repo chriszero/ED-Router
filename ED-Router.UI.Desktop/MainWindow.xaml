@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ED_Router.UI.Desktop"
         xmlns:ViewModel="clr-namespace:ED_Router.UI.Desktop.ViewModel" x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.0.4" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.0.4" MinHeight="438" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
     <Window.DataContext>
         <ViewModel:MainViewModel/>
     </Window.DataContext>
