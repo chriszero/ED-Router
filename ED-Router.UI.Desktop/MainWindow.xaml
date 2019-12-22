@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ED_Router.UI.Desktop"
         xmlns:ViewModel="clr-namespace:ED_Router.UI.Desktop.ViewModel" x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.0.1" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.0.4" Height="438" Width="857" UseLayoutRounding="False">
     <Window.DataContext>
         <ViewModel:MainViewModel/>
     </Window.DataContext>
@@ -19,29 +19,173 @@
                     HotkeyManager.RegisterGlobalHotkey="True" />
     </Window.InputBindings>
 
-    <Grid Height="321" Margin="0,0,-0.333,-0.333" VerticalAlignment="Bottom" RenderTransformOrigin="0.352,0.475">
+    <Grid MinHeight="321"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="216*"/>
-            <ColumnDefinition Width="635*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Label Content="From" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="38"/>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Height="301" Margin="10,10,0,0" VerticalAlignment="Top" Width="615" ItemsSource="{Binding Router.Route.SystemJumps}" IsReadOnly="True" SelectionMode="Single" CanUserSortColumns="False" SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}" RowDetailsVisibilityMode="Visible"/>
-        <Label Content="To" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="26" Width="38"/>
-        <Label Content="Range (LY)" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Height="26" Width="108"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="140,70,0,0" TextWrapping="Wrap" Text="{Binding Router.Range}" VerticalAlignment="Top" Width="66"/>
-        <Label Content="Efficiency " HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Height="26" Width="108"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="140,98,0,0" TextWrapping="Wrap" Text="{Binding Router.Efficiency}" VerticalAlignment="Top" Width="66"/>
-        <Button Content="Calculate" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="177" Command="{Binding CalculateCommand}" Height="20" />
+        <TextBlock Grid.ColumnSpan="2" 
+                   Grid.Row="0"
+                   HorizontalAlignment="Left" 
+                   Height="67" 
+                   Margin="10,-79,0,0" 
+                   TextWrapping="Wrap"
+                   Width="831">
+            <Run FontSize="12.6666666666667" FontFamily="Consolas" Text="Uses" />
+            <Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas"
+                 Text=" https://www.spansh.co.uk/plotter " />
+            <Run FontSize="12.6666666666667" FontFamily="Consolas" Text="to calculate your route" /><LineBreak />
+            <Span Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas">
+                <Run Text="Ctrl+Alt+N" />
+            </Span>
+            <Run Text=" -&gt; Next Waypoint to Clipboard" /><LineBreak />
+            <Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas" Text="Ctrl+Alt+M" />
+            <Run Text=" -&gt; Previous Waypoint to Clipboard" /><LineBreak />
+            <Span Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas">
+                <Run Text="Ctrl+Alt+B" />
+            </Span>
+            <Run Text=" -&gt; Calculate new Route, taking your current system if in ED (start ED-Router before starting the game)" />
+        </TextBlock>
 
-        <ComboBox HorizontalAlignment="Left" Margin="53,14,0,0" VerticalAlignment="Top" Width="153" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True" ItemsSource="{Binding From}" Text="{Binding FromSearch}" IsSynchronizedWithCurrentItem="True" />
-        <ComboBox HorizontalAlignment="Left" Margin="53,41,0,0" VerticalAlignment="Top" Width="153" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True" ItemsSource="{Binding To}" Text="{Binding ToSearch}" IsSynchronizedWithCurrentItem="True" />
-        <Button Content="Next Waypoint" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Width="177" Command="{Binding NextWaypointCommand}" />
-        <Button Content="Prev Waypoint" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" Width="177" Command="{Binding PrevWaypointCommand}" />
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="From" 
+               HorizontalAlignment="Left" 
+               Margin="10,10,0,0"
+               VerticalAlignment="Top"
+               Height="26"
+               Width="38"/>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="1" 
+                  HorizontalAlignment="Stretch" 
+                  Margin="10" 
+                  VerticalAlignment="Stretch" 
+                  ItemsSource="{Binding Router.Route.SystemJumps}"
+                  IsReadOnly="True" 
+                  SelectionMode="Single"
+                  CanUserSortColumns="False" 
+                  SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}"
+                  RowDetailsVisibilityMode="Visible"/>
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="To" 
+               HorizontalAlignment="Left" 
+               Margin="10,38,0,0"
+               VerticalAlignment="Top" 
+               Height="26"
+               Width="38"/>
+        <Label  Grid.Row="1"
+                Grid.Column="0"
+                Content="Range (LY)" 
+                HorizontalAlignment="Left" 
+                Margin="10,66,0,0" 
+                VerticalAlignment="Top"
+                Height="26"
+                Width="108"/>
+        <TextBox Grid.Row="1"
+                 Grid.Column="0"
+                 HorizontalAlignment="Left" 
+                 Height="23" Margin="140,70,0,0"
+                 TextWrapping="Wrap" 
+                 Text="{Binding Router.Range}" 
+                 VerticalAlignment="Top"
+                 Width="66"/>
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="Efficiency " 
+               HorizontalAlignment="Left"
+               Margin="10,94,0,0"
+               VerticalAlignment="Top"
+               Height="26"
+               Width="108"/>
+        <TextBox Grid.Row="1"
+                 Grid.Column="0"
+                 HorizontalAlignment="Left"
+                 Height="23" 
+                 Margin="140,98,0,0"
+                 TextWrapping="Wrap" 
+                 Text="{Binding Router.Efficiency}"
+                 VerticalAlignment="Top"
+                 Width="66"/>
+        <Button Grid.Row="1"
+                Grid.Column="0"
+                Content="Calculate"
+                HorizontalAlignment="Left"
+                Margin="10,140,0,0"
+                VerticalAlignment="Top" 
+                Width="177" 
+                Command="{Binding CalculateCommand}"
+                Height="20" />
 
-        <Label Content="{Binding Router.Start}" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Height="31" Width="196" FontSize="12" FontWeight="SemiBold" ToolTip="Copy to clipboard"/>
-        <Label Content="Current System:" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.518,-0.333" Width="177"/>
-        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="67" Margin="10,-79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="831"><Run FontSize="12.6666666666667" FontFamily="Consolas" Text="Uses"/><Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas" Text=" https://www.spansh.co.uk/plotter "/><Run FontSize="12.6666666666667" FontFamily="Consolas" Text="to calculate your route"/><LineBreak/><Span Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas"><Run Text="Ctrl+Alt+N"/></Span><Run Text=" -&gt; Next Waypoint to Clipboard"/><LineBreak/><Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas" Text="Ctrl+Alt+M"/><Run Text=" -&gt; Previous Waypoint to Clipboard"/><LineBreak/><Span Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas"><Run Text="Ctrl+Alt+B"/></Span><Run Text=" -&gt; Calculate new Route, taking your current system if in ED (start ED-Router before starting the game)"/></TextBlock>
+        <ComboBox Grid.Row="1"
+                  Grid.Column="0"
+                  HorizontalAlignment="Left" 
+                  Margin="53,14,0,0"
+                  VerticalAlignment="Top" 
+                  Width="153" 
+                  IsEditable="True" 
+                  IsTextSearchEnabled="True"
+                  StaysOpenOnEdit="True" 
+                  ItemsSource="{Binding From}"
+                  Text="{Binding FromSearch}" 
+                  IsSynchronizedWithCurrentItem="True" />
+        <ComboBox Grid.Row="1"
+                  Grid.Column="0"
+                  HorizontalAlignment="Left" 
+                  Margin="53,41,0,0" 
+                  VerticalAlignment="Top"
+                  Width="153" 
+                  IsEditable="True"
+                  IsTextSearchEnabled="True"
+                  StaysOpenOnEdit="True"
+                  ItemsSource="{Binding To}"
+                  Text="{Binding ToSearch}" 
+                  IsSynchronizedWithCurrentItem="True" />
+        <Button Grid.Row="1"
+                Grid.Column="0"
+                Content="Next Waypoint"
+                HorizontalAlignment="Left"
+                Margin="10,177,0,0" 
+                VerticalAlignment="Top"
+                Width="177"
+                Command="{Binding NextWaypointCommand}" />
+        <Button Grid.Row="1"
+                Grid.Column="0"
+                Content="Prev Waypoint"
+                HorizontalAlignment="Left" 
+                Margin="10,203,0,0"
+                VerticalAlignment="Top" 
+                Width="177"
+                Command="{Binding PrevWaypointCommand}" />
+
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="{Binding Router.Start}"
+               HorizontalAlignment="Left"
+               Margin="10,267,0,0" 
+               VerticalAlignment="Top" 
+               Height="31" 
+               Width="196"
+               FontSize="12" 
+               FontWeight="SemiBold"
+               ToolTip="Copy to clipboard"/>
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="Current System:"
+               HorizontalAlignment="Left"
+               Margin="10,227,0,0" 
+               VerticalAlignment="Top"
+               RenderTransformOrigin="0.518,-0.333"
+               Width="177"/>
+        
 
     </Grid>
 </Window>
