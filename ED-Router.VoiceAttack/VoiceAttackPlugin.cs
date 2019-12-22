@@ -57,12 +57,15 @@ namespace ED_Router.VoiceAttack
 
             EdRouter.Dispatcher = new DispatcherAccessor(window.Dispatcher);
 
+            App.IsFromVA = true;
+
             vaProxy.WriteToLog($"{VA_DisplayName()} ready!", "green");
         }
 
 		public static void VA_Exit1(dynamic vaProxy)
 		{
-            window?.Dispatcher?.BeginInvoke((Action)window.Close);
+            App.IsFromVA = false;
+            window?.Dispatcher?.BeginInvoke((Action) window.Close);
             (EdRouter.Dispatcher as IDisposable)?.Dispose();
             window?.Dispatcher?.InvokeShutdown();
             window = null;

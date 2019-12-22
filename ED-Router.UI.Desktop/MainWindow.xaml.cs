@@ -28,13 +28,14 @@ namespace ED_Router.UI.Desktop
             InitializeComponent();
         }
 
-        private KeyGestureConverter _converter = new KeyGestureConverter();
-
         protected override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = true;
-            Hide();
-
+            if (App.IsFromVA)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+            
             base.OnClosing(e);
         }
     }

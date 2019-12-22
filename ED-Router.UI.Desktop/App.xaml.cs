@@ -20,6 +20,8 @@ namespace ED_Router.UI.Desktop
 			e.Handled = true;
 		}
 
+        public static bool IsFromVA { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
