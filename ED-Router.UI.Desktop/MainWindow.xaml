@@ -33,11 +33,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="67"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ProgressBar IsIndeterminate="{Binding Router.IsBusy}"
                      Grid.Column="0"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Margin="10,0"
+                     VerticalAlignment="Top"
+                     Height="5px"
                      Grid.Row="0"
                      Grid.ColumnSpan="2"
                      IsEnabled="{Binding Router.IsBusy}"/>
@@ -45,9 +50,8 @@
         <TextBlock Grid.ColumnSpan="2" 
                    Grid.Column="0"
                    Grid.Row="0"
-                   Margin="10"
+                   Margin="10,5"
                    HorizontalAlignment="Left" 
-                   Height="67"
                    TextWrapping="Wrap">
             <Run FontSize="12.6666666666667" FontFamily="Consolas" Text="Uses" />
             <Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas"
