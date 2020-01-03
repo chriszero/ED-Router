@@ -21,7 +21,7 @@ namespace ED_Router.UI.Desktop
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         public MainWindow()
         {
@@ -35,8 +35,21 @@ namespace ED_Router.UI.Desktop
                 e.Cancel = true;
                 Hide();
             }
+            else
+            {
+                Dispose();
+            }
             
             base.OnClosing(e);
+        }
+
+        public void Dispose()
+        {
+            // Let's ensure everything is cleaned up.
+            foreach (var keyBindings in InputBindings.OfType<KeyBinding>())
+            {
+                HotkeyManager.SetRegisterGlobalHotkey(keyBindings, false);
+            }
         }
     }
 }
