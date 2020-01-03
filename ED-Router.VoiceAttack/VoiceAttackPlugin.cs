@@ -10,6 +10,7 @@ namespace ED_Router.VoiceAttack
 	public class VoiceAttackPlugin
 	{
 		private static MainWindow window = null;
+        private static dynamic _vaProxy = null;
 
 		public static string VA_DisplayName()
 		{
@@ -23,7 +24,7 @@ namespace ED_Router.VoiceAttack
 
 		public static string VA_DisplayInfo()
 		{
-			return "VoiceAttack ED-Router Plugin\r\n\r\nRoute your neutron highway.\r\n\r\n2018 chriszero";  //this is just extended info that you might want to give to the user.  note that you should format this up properly.
+			return "VoiceAttack ED-Router Plugin\r\n\r\nRoute your neutron highway.\r\n\r\nCreated by chriszero (2018).\r\n\r\nMaintained by dominiquesavoie (2019)";  //this is just extended info that you might want to give to the user.  note that you should format this up properly.
 		}
 
 		public static void VA_Init1(dynamic vaProxy)
@@ -31,14 +32,15 @@ namespace ED_Router.VoiceAttack
             var configThread = new Thread(Dispatcher.Run);
             configThread.SetApartmentState(ApartmentState.STA);
             configThread.Start();
-
             for (var i = 0; i < 10; i++)
             {
                 var dispatcher = Dispatcher.FromThread(configThread);
 
-                if (dispatcher != null)
+				if (dispatcher != null)
                 {
-                    dispatcher.Invoke(() =>
+                    dispatcher.UnhandledException += DispatcherOnUnhandledException;
+
+					dispatcher.Invoke(() =>
                     {
                         window = new MainWindow();
                     });
@@ -59,16 +61,29 @@ namespace ED_Router.VoiceAttack
 
             App.IsFromVA = true;
 
+            _vaProxy = vaProxy;
+
             vaProxy.WriteToLog($"{VA_DisplayName()} ready!", "green");
         }
 
-		public static void VA_Exit1(dynamic vaProxy)
+        private static void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            _vaProxy?.WriteToLog($"{VA_DisplayName()}: unhandled error, {e.Exception.Message}.", "red");
+        }
+
+        public static void VA_Exit1(dynamic vaProxy)
 		{
             App.IsFromVA = false;
-            window?.Dispatcher?.BeginInvoke((Action) window.Close);
+            if (window?.Dispatcher != null)
+            {
+				window.Dispatcher.UnhandledException -= DispatcherOnUnhandledException;
+				window.Dispatcher.BeginInvoke((Action)window.Close);
+            }
             (EdRouter.Dispatcher as IDisposable)?.Dispose();
             window?.Dispatcher?.InvokeShutdown();
-            window = null;
+            _vaProxy = null;
+			window = null;
         }
 
 		public static void VA_StopCommand()
