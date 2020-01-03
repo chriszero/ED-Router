@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ED_Router.UI.Desktop"
-        xmlns:ViewModel="clr-namespace:ED_Router.UI.Desktop.ViewModel" x:Class="ED_Router.UI.Desktop.MainWindow"
+        xmlns:ViewModel="clr-namespace:ED_Router.UI.Desktop.ViewModel"
+        xmlns:converters="clr-namespace:ED_Router.UI.Desktop.Converters"
+        x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.0.4" MinHeight="438" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.0.5" MinHeight="438" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
+    <Window.Resources>
+        <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
+    </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
     </Window.DataContext>
@@ -28,17 +33,22 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="67"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <ProgressBar IsIndeterminate="{Binding Router.IsBusy}"
+                     Grid.Column="0"
+                     Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     IsEnabled="{Binding Router.IsBusy}"/>
 
         <TextBlock Grid.ColumnSpan="2" 
+                   Grid.Column="0"
                    Grid.Row="0"
+                   Margin="10"
                    HorizontalAlignment="Left" 
-                   Height="67" 
-                   Margin="10,-79,0,0" 
-                   TextWrapping="Wrap"
-                   Width="831">
+                   Height="67"
+                   TextWrapping="Wrap">
             <Run FontSize="12.6666666666667" FontFamily="Consolas" Text="Uses" />
             <Run Foreground="Blue" FontSize="12.6666666666667" FontFamily="Consolas"
                  Text=" https://www.spansh.co.uk/plotter " />
@@ -72,6 +82,7 @@
                   IsReadOnly="True" 
                   SelectionMode="Single"
                   CanUserSortColumns="False" 
+                  IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                   SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}"
                   RowDetailsVisibilityMode="Visible"/>
         <Label Grid.Row="1"
@@ -122,6 +133,7 @@
                 Margin="10,140,0,0"
                 VerticalAlignment="Top" 
                 Width="177" 
+                IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                 Command="{Binding CalculateCommand}"
                 Height="20" />
 
@@ -156,6 +168,7 @@
                 Margin="10,177,0,0" 
                 VerticalAlignment="Top"
                 Width="177"
+                IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                 Command="{Binding NextWaypointCommand}" />
         <Button Grid.Row="1"
                 Grid.Column="0"
@@ -164,6 +177,7 @@
                 Margin="10,203,0,0"
                 VerticalAlignment="Top" 
                 Width="177"
+                IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                 Command="{Binding PrevWaypointCommand}" />
 
         <Label Grid.Row="1"

@@ -1,6 +1,6 @@
+using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using libspanch;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
@@ -8,36 +8,11 @@ using System.Windows;
 
 namespace ED_Router.UI.Desktop.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public MainViewModel()
         {
-			////if (IsInDesignMode)
-			////{
-			////    // Code runs in Blend --> create design time data.
-			////}
-			////else
-			////{
-			////    // Code runs "for real"
-			////}
-
-			CalculateCommand = new RelayCommand(CalculateMethod);
+            CalculateCommand = new RelayCommand(CalculateMethod);
 			NextWaypointCommand = new RelayCommand(NextWaypointMethod);
 			PrevWaypointCommand = new RelayCommand(PrevWaypointMethod);
 			CopyToClipboardCommand = new RelayCommand(WaypointToClipboard);
@@ -62,7 +37,6 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 
 		public EdRouter Router { get; private set; }
-		public ObservableCollection<SystemJump> MyRoute { get; set; }
 		public ObservableCollection<string> From { get; private set; }
 		public ObservableCollection<string> To { get; private set; }
 
@@ -135,17 +109,16 @@ namespace ED_Router.UI.Desktop.ViewModel
 				}
 			}
 		}
-
-
-		public void CalculateMethod()
+		
+		public async void CalculateMethod()
 		{
-			Router.Start = FromSearch;
-			Router.Destination = ToSearch;
-			try
+            try
 			{
-				Router.CalculateRoute();
+                Router.Start = FromSearch;
+                Router.Destination = ToSearch;
+				await Router.CalculateRouteAsync();
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
 			}
@@ -153,16 +126,30 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		public void NextWaypointMethod()
 		{
-			Router.NextWaypoint();
-			WaypointToClipboard();
-			RaisePropertyChanged("Router");
+            try
+            {
+                Router.NextWaypoint();
+                WaypointToClipboard();
+                RaisePropertyChanged(() => Router);
+            }
+            catch (Exception e)
+            {
+				MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
 		}
 
 		public void PrevWaypointMethod()
 		{
-			Router.PreviousWaypoint();
-			WaypointToClipboard();
-			RaisePropertyChanged("Router");
+            try
+            {
+                Router.PreviousWaypoint();
+                WaypointToClipboard();
+                RaisePropertyChanged(() => Router);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
 		}
 
 		public void WaypointToClipboard()

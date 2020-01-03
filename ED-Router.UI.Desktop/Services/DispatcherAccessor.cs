@@ -26,9 +26,9 @@ namespace ED_Router.UI.Desktop.Services
 
         public void Invoke(Action action)
         {
-            // We are already on the dispatcher. Execute the code immediately
-            if (Thread.CurrentThread == _dispatcher.Thread)
+            if (_dispatcher.CheckAccess())
             {
+                // We are already on the dispatcher. Execute the code immediately
                 action();
                 return;
             }

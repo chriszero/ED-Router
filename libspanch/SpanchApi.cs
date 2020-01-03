@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace libspanch
 {
@@ -31,8 +32,34 @@ namespace libspanch
             return response.Data;
         }
 
+        /// <summary>
+        /// If response is null, the request may be queued by the server, repeat request 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private async Task<T> ExecuteAsync<T>(RestRequest request) where T : new()
+        {
+            var client = new RestClient
+            {
+                UserAgent = "libspanch",
+                BaseUrl = new Uri(baseUri)
+            };
 
-        // Todo: make async!
+            var responseTask = new TaskCompletionSource<IRestResponse<T>>();
+            client.ExecuteAsync<T>(request, responseTask.SetResult);
+
+            var response = await responseTask.Task;
+
+            if (response.ErrorException != null)
+            {
+                const string message = "Error retrieving response.  Check inner details for more info.";
+                throw new ApplicationException(message, response.ErrorException);
+            }
+
+            return response.Data;
+        }
+
         public Route PlotRoute(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
         {
             var request = new RestRequest("route");
@@ -57,6 +84,35 @@ namespace libspanch
                 routeResponse = Execute<RequestResult<Route>>(routeRequest);
                 // wait few ms? limit via time?
                 Thread.Sleep(1000);
+            }
+
+            return routeResponse.Result;
+        }
+
+        public async Task<Route> PlotRouteAsync(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
+        {
+            var request = new RestRequest("route");
+            request.AddParameter("efficiency", efficiency)
+                .AddParameter("range", jumpRange)
+                .AddParameter("from", startSystem)
+                .AddParameter("to", destinationSystem);
+
+            var response = await ExecuteAsync<RequestResult>(request);
+
+            var routeRequest = new RestRequest("results/{job}");
+            routeRequest.AddParameter("job", response.Job, ParameterType.UrlSegment);
+
+            var routeResponse = await ExecuteAsync<RequestResult<Route>>(routeRequest);
+            if (routeResponse.Error != null)
+            {
+                throw new RouteException(routeResponse.Error);
+            }
+
+            while (routeResponse.Status.ToLower() == "queued")
+            {
+                routeResponse = await ExecuteAsync<RequestResult<Route>>(routeRequest);
+                // wait few ms? limit via time?
+                await Task.Delay(1000);
             }
 
             return routeResponse.Result;

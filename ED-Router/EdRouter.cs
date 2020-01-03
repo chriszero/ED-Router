@@ -14,6 +14,17 @@ namespace ED_Router
 {
 	public class EdRouter : INotifyPropertyChanged
     {
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged(nameof(IsBusy));
+			}
+        }
+
         public static IDispatcherAccessor Dispatcher;
 		private static readonly EdRouter _instance = new EdRouter();
 		private static string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
@@ -138,27 +149,57 @@ namespace ED_Router
 			}
 		}
 
+        public async Task CalculateRouteAsync()
+        {
+            if (Start?.Length > 0 && Destination?.Length > 0)
+            {
+                try
+                {
+                    IsBusy = true;
+                    var route = await Task.Run(() => _api.PlotRouteAsync(Start, Destination, Range, Efficiency));
+                    if (route.TotalJumps > 0)
+                    {
+                        Route = route;
+                        _currentWaypoint = 0;
+                        CurrentWaypoint = Route.SystemJumps.ElementAt(0);
+                    }
+				}
+                finally
+                {
+                    IsBusy = false;
+
+                }
+            }
+            else
+            {
+                throw new Exception("Start or Destination is empty.");
+            }
+        }
+
 		public void CalculateRoute()
 		{
-			if (Start?.Length > 0 && Destination?.Length > 0)
+            if (Start?.Length > 0 && Destination?.Length > 0)
 			{
-				var route = _api.PlotRoute(Start, Destination, Range, Efficiency);
-				if (route.TotalJumps > 0)
-				{
-					Route = route;
-					_currentWaypoint = 0;
-					CurrentWaypoint = Route.SystemJumps.ElementAt(0);
+                try
+                {
+                    IsBusy = true;
+                    var route = _api.PlotRoute(Start, Destination, Range, Efficiency);
+                    if (route.TotalJumps > 0)
+                    {
+                        Route = route;
+                        _currentWaypoint = 0;
+                        CurrentWaypoint = Route.SystemJumps.ElementAt(0);
+                    }
+                }
+                finally
+                {
+                    IsBusy = false;
 				}
 			}
 			else
             {
                 throw new Exception("Start or Destination is empty.");
             }
-		}
-
-		public string GetCurrentSystem()
-		{
-			return "";
 		}
 
 		public SystemJump NextWaypoint()
