@@ -20,7 +20,7 @@ namespace ED_Router
 			if(!string.IsNullOrEmpty(location))
 			{
 				//raise event
-				NewLocation(location);
+				NewLocation?.Invoke(location);
 			}
 		}
 

@@ -153,7 +153,7 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		public void NextWaypointMethod()
 		{
-			Router.NextWaypoint();
+            Router.NextWaypoint();
 			WaypointToClipboard();
 			RaisePropertyChanged("Router");
 		}
@@ -167,6 +167,10 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		public void WaypointToClipboard()
 		{
+            if (Router.CurrentWaypoint == null)
+            {
+                return;
+            }
 			Clipboard.SetText(Router.CurrentWaypoint.System);
 		}
 	}

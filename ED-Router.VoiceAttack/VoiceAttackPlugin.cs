@@ -86,13 +86,19 @@ namespace ED_Router.VoiceAttack
 				{
 					case "next_waypoint":
 						var next = EdRouter.Instance.NextWaypoint();
-						vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
-						vaProxy.SetText("next_waypoint", next.System);
+                        if (next != null)
+                        {
+                            vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
+                            vaProxy.SetText("next_waypoint", next.System);
+						}
 						break;
 					case "prev_waypoint":
 						var prev = EdRouter.Instance.PreviousWaypoint();
-						vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
-						vaProxy.SetText("prev_waypoint", prev.System);
+                        if (prev != null)
+                        {
+                            vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
+                            vaProxy.SetText("prev_waypoint", prev.System);
+                        }
 						break;
 					case "open_gui":
 						InvokeConfiguration();
@@ -121,12 +127,19 @@ namespace ED_Router.VoiceAttack
 		{
 			var copyThread = new Thread(() =>
 			{
-				try
-				{
-					Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.System);
-				}
-				catch (Exception)
-				{ }
+                try
+                {
+                    if (EdRouter.Instance.CurrentWaypoint == null)
+                    {
+                        return;
+                    }
+
+                    Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.System);
+                }
+                catch
+                {
+                    
+                }
 
 			});
 			copyThread.SetApartmentState(ApartmentState.STA);

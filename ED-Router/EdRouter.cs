@@ -163,6 +163,10 @@ namespace ED_Router
 
 		public SystemJump NextWaypoint()
 		{
+            if (Route == null)
+            {
+                return null;
+            }
 			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemJumps.Count)
 			{
 				var next = Route.SystemJumps[++_currentWaypoint];
@@ -173,6 +177,10 @@ namespace ED_Router
 
 		public SystemJump PreviousWaypoint()
 		{
+            if (Route == null)
+            {
+                return null;
+            }
 			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
 				var next = Route.SystemJumps[--_currentWaypoint];
