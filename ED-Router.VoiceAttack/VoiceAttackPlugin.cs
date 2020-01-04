@@ -124,7 +124,8 @@ namespace ED_Router.VoiceAttack
                         EdRouter.Instance.EnableAutoWaypoint = !EdRouter.Instance.EnableAutoWaypoint;
                         break;
 					case "toggle_location_debug":
-
+                        EdRouter.Instance.CurrentLocationDebug = !EdRouter.Instance.CurrentLocationDebug;
+                        break;
 					default:
 						break;
 				}
