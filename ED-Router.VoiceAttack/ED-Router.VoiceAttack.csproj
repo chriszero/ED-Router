@@ -55,7 +55,9 @@
     <Compile Include="Commands\NextWaypoint.cs" />
     <Compile Include="Commands\OpenGui.cs" />
     <Compile Include="Commands\PreviousWaypoint.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\VoiceAttackAccessor.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,5 +78,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

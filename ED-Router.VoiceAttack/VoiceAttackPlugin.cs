@@ -3,14 +3,15 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using ED_Router.Services;
 using ED_Router.UI.Desktop.Services;
+using ED_Router.VoiceAttack.Services;
 
 namespace ED_Router.VoiceAttack
 {
 	public class VoiceAttackPlugin
 	{
 		private static MainWindow window = null;
-        private static dynamic _vaProxy = null;
 
 		public static string VA_DisplayName()
 		{
@@ -57,19 +58,17 @@ namespace ED_Router.VoiceAttack
                 return;
             }
 
-            EdRouter.Dispatcher = new DispatcherAccessor(window.Dispatcher);
+            EdRouter.Init(new DispatcherAccessor(window.Dispatcher), new VoiceAttackAccessor(vaProxy));
 
             App.IsFromVA = true;
 
-            _vaProxy = vaProxy;
-
-            vaProxy.WriteToLog($"{VA_DisplayName()} ready!", "green");
+            EdRouter.Instance.VoiceAttackAccessor.LogMessage($"{VA_DisplayName()} ready!", MessageColor.Green);
         }
 
         private static void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            _vaProxy?.WriteToLog($"{VA_DisplayName()}: unhandled error, {e.Exception.Message}.", "red");
+            EdRouter.Instance.VoiceAttackAccessor.LogMessage($"{VA_DisplayName()}: unhandled error, {e.Exception.Message}.", MessageColor.Red);
         }
 
         public static void VA_Exit1(dynamic vaProxy)
@@ -80,9 +79,8 @@ namespace ED_Router.VoiceAttack
 				window.Dispatcher.UnhandledException -= DispatcherOnUnhandledException;
 				window.Dispatcher.BeginInvoke((Action)window.Close);
             }
-            (EdRouter.Dispatcher as IDisposable)?.Dispose();
-            window?.Dispatcher?.InvokeShutdown();
-            _vaProxy = null;
+			EdRouter.Instance.Dispose();
+			window?.Dispatcher?.InvokeShutdown();
 			window = null;
         }
 
@@ -122,6 +120,11 @@ namespace ED_Router.VoiceAttack
 						EdRouter.Instance.CalculateRoute();
 						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps.ToString());
 						break;
+					case "toggle_automate_next_waypoint" :
+                        EdRouter.Instance.EnableAutoWaypoint = !EdRouter.Instance.EnableAutoWaypoint;
+                        break;
+					case "toggle_location_debug":
+
 					default:
 						break;
 				}

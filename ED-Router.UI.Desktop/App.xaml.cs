@@ -26,7 +26,14 @@ namespace ED_Router.UI.Desktop
         {
             base.OnStartup(e);
 
-            EdRouter.Dispatcher = new DispatcherAccessor(Current.Dispatcher);
+            EdRouter.Init(new DispatcherAccessor(Current.Dispatcher), new DummyVoiceAttackAccessor());
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            EdRouter.Instance.Dispose();
         }
     }
 }
