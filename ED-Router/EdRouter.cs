@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ED_Router.Events;
 using ED_Router.Services;
 using libspanch;
 using Newtonsoft.Json.Linq;
@@ -58,19 +59,14 @@ namespace ED_Router
 		{
 			Start = obj;
 
-			if (CurrentLocationDebug)
-            {
-				VoiceAttackAccessor.LogMessage($"EDRouter: current system {obj}", MessageColor.Yellow);
-            }
-
-            if (!EnableAutoWaypoint || !string.Equals(CurrentWaypoint.System, obj))
+            if (CurrentWaypoint == null || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint.System, obj, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
             var nextSystem = NextWaypoint();
 
-            VoiceAttackAccessor.SendEvent($"Next Waypoint Set");
+            VoiceAttackAccessor.SendEvent(new RouterEventArgs(){ EventName = "next_waypoint", System = nextSystem.System} );
 
             if (nextSystem.DistanceLeft > 0)
             {
@@ -78,7 +74,7 @@ namespace ED_Router
             }
 
             EnableAutoWaypoint = false;
-            VoiceAttackAccessor.SendEvent($"Final Waypoint Set");
+            VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "final_waypoint"});
         }
 
 		private SpanchApi _api;
@@ -101,8 +97,6 @@ namespace ED_Router
 				OnPropertyChanged();
 			}
 		}
-
-        public bool CurrentLocationDebug { get; set; } = false;
 
         private bool _enableAutoWaypoint;
         public bool EnableAutoWaypoint
@@ -204,7 +198,7 @@ namespace ED_Router
                 finally
                 {
                     IsBusy = false;
-					VoiceAttackAccessor.SendEvent("Calculate Route");
+					VoiceAttackAccessor.SendEvent(new RouterEventArgs(){EventName = "calculate_route"});
                 }
             }
             else
@@ -231,7 +225,7 @@ namespace ED_Router
                 finally
                 {
                     IsBusy = false;
-                    VoiceAttackAccessor.SendEvent("CalculateRoute");
+                    VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "calculate_route"});
 				}
 			}
 			else
@@ -336,9 +330,10 @@ namespace ED_Router
         {
             (Dispatcher as IDisposable)?.Dispose();
             (VoiceAttackAccessor as IDisposable)?.Dispose();
-			_backgroundTask?.Dispose();
             _jMon.NewLocation -= _jMon_NewLocation;
-			_jMon.Stop();
+            _jMon.Stop();
+
+			_backgroundTask = null;
         }
     }
 }

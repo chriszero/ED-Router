@@ -1,4 +1,5 @@
-﻿using ED_Router.Services;
+﻿using ED_Router.Events;
+using ED_Router.Services;
 
 namespace ED_Router.UI.Desktop.Services
 {
@@ -8,8 +9,9 @@ namespace ED_Router.UI.Desktop.Services
         {
         }
 
-        public void SendEvent(string @event)
+        public void SendEvent(RouterEventArgs @event)
         {
+            
         }
 
         public void SetVariable<T>(string variableName, T content)

@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdRouter.cs" />
+    <Compile Include="Events\LoggerEventArgs.cs" />
+    <Compile Include="Events\RouterEventArgs.cs" />
     <Compile Include="Services\IDispatcherAccessor.cs" />
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />
