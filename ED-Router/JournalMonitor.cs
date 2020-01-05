@@ -39,7 +39,6 @@ namespace ED_Router
 
 					switch (eventType)
 					{
-						case "StartJump":
 						case "FSDJump":
 						case "Location":
 							location = (string)o["StarSystem"];
@@ -52,8 +51,9 @@ namespace ED_Router
 					}
                 }
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+                EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter: An error occurred {ex.Message}", MessageColor.Red);
 			}
 			return location;
 		}
