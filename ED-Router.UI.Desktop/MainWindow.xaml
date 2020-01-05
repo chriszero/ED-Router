@@ -186,24 +186,36 @@
 
         <Label Grid.Row="1"
                Grid.Column="0"
-               Content="{Binding Router.Start}"
-               HorizontalAlignment="Left"
-               Margin="10,267,0,0" 
-               VerticalAlignment="Top" 
-               Height="31" 
-               Width="196"
-               FontSize="12" 
-               FontWeight="SemiBold"
-               ToolTip="Copy to clipboard"/>
-        <Label Grid.Row="1"
-               Grid.Column="0"
                Content="Current System:"
                HorizontalAlignment="Left"
                Margin="10,227,0,0" 
                VerticalAlignment="Top"
                RenderTransformOrigin="0.518,-0.333"
                Width="177"/>
-        
+
+
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               Content="{Binding Router.Start}"
+               HorizontalAlignment="Left"
+               Margin="10,247,0,0" 
+               VerticalAlignment="Top" 
+               Height="31" 
+               Width="196"
+               FontSize="12" 
+               FontWeight="SemiBold"
+               ToolTip="Copy to clipboard"/>
+
+        <StackPanel HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10,267,0,0"
+                    Orientation="Horizontal"
+                    Grid.Row="1"
+                    Grid.Column="0">
+            <Label Content="Enable auto waypoint"/>
+            <CheckBox IsChecked="{Binding Router.EnableAutoWaypoint}"
+                      VerticalAlignment="Center"/>
+        </StackPanel>
 
     </Grid>
 </Window>

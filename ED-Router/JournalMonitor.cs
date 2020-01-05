@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using ED_Router.Services;
 
 namespace ED_Router
 {
@@ -26,32 +27,33 @@ namespace ED_Router
 
 		public static string GetLocation(string line)
 		{
-			string location = "";
+			var location = "";
 			try
 			{
-				Match match = JsonRegex.Match(line);
+				var match = JsonRegex.Match(line);
 				if (match.Success)
 				{
-					JObject o = JObject.Parse(line);
-					/*dynamic ev = JObject.Parse(line);
-					string loca = ev.StarSystem;*/
+					var o = JObject.Parse(line);
 
-					string eventType = (string)o["event"];
+					var eventType = (string)o["event"];
 
 					switch (eventType)
 					{
-						case "StartJump":
 						case "FSDJump":
 						case "Location":
 							location = (string)o["StarSystem"];
-							
+
+                            if (location == null)
+                            {
+								EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter: ERROR, event missing StarSystem. {line}", MessageColor.Red);
+                            }
 							break;
 					}
-
-				}
+                }
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+                EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter: An error occurred {ex.Message}", MessageColor.Red);
 			}
 			return location;
 		}

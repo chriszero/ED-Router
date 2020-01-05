@@ -44,10 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdRouter.cs" />
-    <Compile Include="IDispatcherAccessor.cs" />
+    <Compile Include="Events\LoggerEventArgs.cs" />
+    <Compile Include="Events\RouterEventArgs.cs" />
+    <Compile Include="Services\IDispatcherAccessor.cs" />
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IVoiceAttackAccessor.cs" />
+    <Compile Include="Services\MessageColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libspanch\libspanch.csproj">
@@ -58,5 +62,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

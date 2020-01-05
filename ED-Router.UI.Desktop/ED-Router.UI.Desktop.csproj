@@ -78,6 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\BoolInverterConverter.cs" />
     <Compile Include="Services\DispatcherAccessor.cs" />
+    <Compile Include="Services\DummyVoiceAttackAccessor.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

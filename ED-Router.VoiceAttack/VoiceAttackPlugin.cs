@@ -3,16 +3,19 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using ED_Router.Events;
+using ED_Router.Services;
 using ED_Router.UI.Desktop.Services;
+using ED_Router.VoiceAttack.Extensions;
+using ED_Router.VoiceAttack.Services;
 
 namespace ED_Router.VoiceAttack
 {
 	public class VoiceAttackPlugin
 	{
 		private static MainWindow window = null;
-        private static dynamic _vaProxy = null;
 
-		public static string VA_DisplayName()
+        public static string VA_DisplayName()
 		{
 			return "VoiceAttack ED-Router Plugin";  //a name to distinguish my plugin from others
 		}
@@ -57,19 +60,47 @@ namespace ED_Router.VoiceAttack
                 return;
             }
 
-            EdRouter.Dispatcher = new DispatcherAccessor(window.Dispatcher);
+            var voiceAttackAccessor = new VoiceAttackAccessor();
+
+			voiceAttackAccessor.EventSent += (sender, args) =>
+            {
+                HandleEvents(args, ref vaProxy);
+            };
+
+            voiceAttackAccessor.LogSent += (sender, args) => { WriteToLog(ref vaProxy, args.Message, args.Color); };
+
+			EdRouter.Init(new DispatcherAccessor(window.Dispatcher), voiceAttackAccessor);
 
             App.IsFromVA = true;
 
-            _vaProxy = vaProxy;
+            vaProxy.WriteToLog($"{VA_DisplayName()} ready!", MessageColor.Green.ToLogColor());
+        }
 
-            vaProxy.WriteToLog($"{VA_DisplayName()} ready!", "green");
+        private static void WriteToLog(ref dynamic vaProxy, string message, MessageColor color = MessageColor.Blue)
+        {
+            vaProxy.WriteToLog($"EdRouter: {message}", color.ToLogColor());
+        }
+
+        private static void HandleEvents(RouterEventArgs e, ref dynamic vaProxy)
+        {
+            var vaCommandName = $"((EDRouter {e.EventName.ToLowerInvariant()}))";
+            if (vaProxy.CommandExists(vaCommandName))
+            {
+                vaProxy.ExecuteCommand(vaCommandName);
+            }
+            
+            if (string.IsNullOrEmpty(e.System))
+            {
+                return;
+            }
+
+			WaypointToClipboard();
         }
 
         private static void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            _vaProxy?.WriteToLog($"{VA_DisplayName()}: unhandled error, {e.Exception.Message}.", "red");
+            EdRouter.Instance.VoiceAttackAccessor.LogMessage($"{VA_DisplayName()}: unhandled error, {e.Exception.Message}.", MessageColor.Red);
         }
 
         public static void VA_Exit1(dynamic vaProxy)
@@ -80,9 +111,8 @@ namespace ED_Router.VoiceAttack
 				window.Dispatcher.UnhandledException -= DispatcherOnUnhandledException;
 				window.Dispatcher.BeginInvoke((Action)window.Close);
             }
-            (EdRouter.Dispatcher as IDisposable)?.Dispose();
-            window?.Dispatcher?.InvokeShutdown();
-            _vaProxy = null;
+			EdRouter.Instance.Dispose();
+			window?.Dispatcher?.InvokeShutdown();
 			window = null;
         }
 
@@ -122,6 +152,9 @@ namespace ED_Router.VoiceAttack
 						EdRouter.Instance.CalculateRoute();
 						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps.ToString());
 						break;
+					case "toggle_automate_next_waypoint" :
+                        EdRouter.Instance.EnableAutoWaypoint = !EdRouter.Instance.EnableAutoWaypoint;
+                        break;
 					default:
 						break;
 				}

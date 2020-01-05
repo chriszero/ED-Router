@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ED_Router.Events;
+using ED_Router.Services;
 using libspanch;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ED_Router
 {
-	public class EdRouter : INotifyPropertyChanged
+	public class EdRouter : INotifyPropertyChanged, IDisposable
     {
         private bool _isBusy = false;
         public bool IsBusy
@@ -25,29 +25,29 @@ namespace ED_Router
 			}
         }
 
-        public static IDispatcherAccessor Dispatcher;
-		private static readonly EdRouter _instance = new EdRouter();
-		private static string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
-		public static EdRouter Instance
-		{
-			get
-			{
-				return _instance;
-			}
-		}
+        public IDispatcherAccessor Dispatcher { get; protected set; }
+		public IVoiceAttackAccessor VoiceAttackAccessor { get; protected set; }
+        public static EdRouter Instance { get; } = new EdRouter();
 
-		private EdRouter()
+		private static bool _initialization;
+        public static void Init(IDispatcherAccessor dispatcherAccessor, IVoiceAttackAccessor voiceAttackAccessor)
+        {
+            if (_initialization) return;
+            _initialization = true;
+            Instance.Dispatcher = dispatcherAccessor;
+            Instance.VoiceAttackAccessor = voiceAttackAccessor;
+        }
+
+		private static string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
+		private Task _backgroundTask;
+        private EdRouter()
 		{
 			settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
 			_api = new SpanchApi();
 			_jMon = new JournalMonitor();
 			_jMon.NewLocation += _jMon_NewLocation;
 
-			var backgroundTask = Task.Factory.StartNew(() =>
-			{
-				_jMon.Start();
-				//do something with the result
-			});
+            _backgroundTask = Task.Factory.StartNew(_jMon.Start);
 
 			_range = 20;
 			_efficiency = 60;
@@ -58,7 +58,24 @@ namespace ED_Router
 		private void _jMon_NewLocation(string obj)
 		{
 			Start = obj;
-		}
+
+            if (CurrentWaypoint == null || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint.System, obj, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
+            var nextSystem = NextWaypoint();
+
+            VoiceAttackAccessor.SendEvent(new RouterEventArgs(){ EventName = "next_waypoint", System = nextSystem.System} );
+
+            if (nextSystem.DistanceLeft > 0)
+            {
+                return;
+            }
+
+            EnableAutoWaypoint = false;
+            VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "final_waypoint"});
+        }
 
 		private SpanchApi _api;
 		private int _currentWaypoint;
@@ -77,9 +94,23 @@ namespace ED_Router
 			set
 			{
 				_route = value;
-				OnPropertyChanged("Route");
+				OnPropertyChanged();
 			}
 		}
+
+        private bool _enableAutoWaypoint;
+        public bool EnableAutoWaypoint
+        {
+            get { return _enableAutoWaypoint; }
+            set
+            {
+                if (_enableAutoWaypoint == value) return;
+
+                _enableAutoWaypoint = value;
+
+                OnPropertyChanged();
+            }
+        }
 
 
 		private string _start;
@@ -97,7 +128,7 @@ namespace ED_Router
 				else
 					_start = string.Empty;
 
-				OnPropertyChanged("Start");
+				OnPropertyChanged();
 				SaveSettings();
 			}
 		}
@@ -117,7 +148,7 @@ namespace ED_Router
 					_destination = string.Empty;
 
 				SaveSettings();
-				OnPropertyChanged("Destination");
+				OnPropertyChanged();
 			}
 		}
 
@@ -131,7 +162,7 @@ namespace ED_Router
 
 				_range = value;
 				SaveSettings();
-				OnPropertyChanged("Range");
+				OnPropertyChanged();
 			}
 		}
 
@@ -145,7 +176,7 @@ namespace ED_Router
 
 				_efficiency = value;
 				SaveSettings();
-				OnPropertyChanged("Efficiency");
+				OnPropertyChanged();
 			}
 		}
 
@@ -167,7 +198,7 @@ namespace ED_Router
                 finally
                 {
                     IsBusy = false;
-
+					VoiceAttackAccessor.SendEvent(new RouterEventArgs(){EventName = "calculate_route"});
                 }
             }
             else
@@ -194,6 +225,7 @@ namespace ED_Router
                 finally
                 {
                     IsBusy = false;
+                    VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "calculate_route"});
 				}
 			}
 			else
@@ -239,7 +271,7 @@ namespace ED_Router
 					return;
 
 				_currentWaypoint1 = value;
-				OnPropertyChanged("CurrentWaypoint");
+				OnPropertyChanged();
 			}
 		}
 
@@ -288,10 +320,20 @@ namespace ED_Router
 
 		}
 
-		// Create the OnPropertyChanged method to raise the event
-		protected void OnPropertyChanged(string name)
-		{
+		protected void OnPropertyChanged([CallerMemberName]string name = "")
+        {
+            if (string.IsNullOrEmpty(name)) return;
             Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
 		}
-	}
+
+        public void Dispose()
+        {
+            (Dispatcher as IDisposable)?.Dispose();
+            (VoiceAttackAccessor as IDisposable)?.Dispose();
+            _jMon.NewLocation -= _jMon_NewLocation;
+            _jMon.Stop();
+
+			_backgroundTask = null;
+        }
+    }
 }
