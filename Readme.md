@@ -3,7 +3,7 @@
 ED-Route is a companion app for Elite: Dangerous. Standalone or as VoiceAttack plugin.
 I've created the app primary as a helper for deepspace exploration in VR (Rift/Vive)
 
-ALPHA version! use for testing only!
+BETA version! You might have bugs.
 
 ## Installing ED-Router
 
