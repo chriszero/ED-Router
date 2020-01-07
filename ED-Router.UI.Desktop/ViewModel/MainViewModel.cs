@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
 using System.Windows;
+using ED_Router.Services;
 
 namespace ED_Router.UI.Desktop.ViewModel
 {
@@ -117,10 +118,19 @@ namespace ED_Router.UI.Desktop.ViewModel
                 Router.Start = FromSearch;
                 Router.Destination = ToSearch;
 				await Router.CalculateRouteAsync();
-			}
-			catch (Exception ex)
+                
+                EdRouter.Instance.VoiceAttackAccessor.SetVariable("total_jumps", EdRouter.Instance.Route.TotalJumps);
+            }
+			catch (Exception e)
 			{
-				MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (App.IsFromVA)
+                {
+                    EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter Error: {e.Message}", MessageColor.Red);
+				}
+                else
+                {
+					MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+				}
 			}
 		}
 
@@ -129,12 +139,21 @@ namespace ED_Router.UI.Desktop.ViewModel
             try
             {
                 Router.NextWaypoint();
-                WaypointToClipboard();
+                EdRouter.Instance.VoiceAttackAccessor.SetVariable("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
+                EdRouter.Instance.VoiceAttackAccessor.SetVariable("next_waypoint", EdRouter.Instance.CurrentWaypoint.System);
+				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }
             catch (Exception e)
             {
-				MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (App.IsFromVA)
+                {
+					EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter Error: {e.Message}", MessageColor.Red);
+                }
+                else
+                {
+                    MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
 			}
 		}
 
@@ -143,12 +162,22 @@ namespace ED_Router.UI.Desktop.ViewModel
             try
             {
                 Router.PreviousWaypoint();
-                WaypointToClipboard();
+
+                EdRouter.Instance.VoiceAttackAccessor.SetVariable("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
+                EdRouter.Instance.VoiceAttackAccessor.SetVariable("prev_waypoint", EdRouter.Instance.CurrentWaypoint.System);
+				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+				if (App.IsFromVA)
+                {
+                    EdRouter.Instance.VoiceAttackAccessor.LogMessage($"EDRouter Error: {e.Message}", MessageColor.Red);
+				}
+                else
+                {
+                    MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
 			}
 		}
 

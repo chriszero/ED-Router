@@ -57,24 +57,23 @@ namespace ED_Router
 
 		private void _jMon_NewLocation(string obj)
 		{
-			Start = obj;
+            Start = obj;
 
-            if (CurrentWaypoint == null || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint.System, obj, StringComparison.InvariantCultureIgnoreCase))
+            if (CurrentWaypoint == null || Route == null || Route.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
             {
+                return;
+            }
+
+            if (string.Equals(Route?.DestinationSystem, obj))
+            {
+				EnableAutoWaypoint = false;
+                VoiceAttackAccessor.SendEvent(new RouterEventArgs() { EventName = "final_waypoint" });
                 return;
             }
 
             var nextSystem = NextWaypoint();
 
-            VoiceAttackAccessor.SendEvent(new RouterEventArgs(){ EventName = "next_waypoint", System = nextSystem.System} );
-
-            if (nextSystem.DistanceLeft > 0)
-            {
-                return;
-            }
-
-            EnableAutoWaypoint = false;
-            VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "final_waypoint"});
+            VoiceAttackAccessor.SendEvent(new RouterEventArgs() { EventName = "next_waypoint", System = nextSystem.System });
         }
 
 		private SpanchApi _api;
@@ -123,11 +122,15 @@ namespace ED_Router
 					return;
 
 				var list = _api.GetSystems(value);
-				if (list.Contains(value))
-					_start = value;
-				else
-					_start = string.Empty;
-
+                if (list.Contains(value))
+                {
+                    _start = value;
+				}
+                else
+                {
+                    _start = string.Empty;
+				}
+					
 				OnPropertyChanged();
 				SaveSettings();
 			}

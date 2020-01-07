@@ -69,11 +69,27 @@ namespace ED_Router.VoiceAttack
 
             voiceAttackAccessor.LogSent += (sender, args) => { WriteToLog(ref vaProxy, args.Message, args.Color); };
 
+            voiceAttackAccessor.VariableSent += (sender, args) => { SetVariable(ref vaProxy, args.ValueType, args.VariableName, args.Value); };
+
 			EdRouter.Init(new DispatcherAccessor(window.Dispatcher), voiceAttackAccessor);
 
             App.IsFromVA = true;
 
             vaProxy.WriteToLog($"{VA_DisplayName()} ready!", MessageColor.Green.ToLogColor());
+        }
+
+        private static void SetVariable(ref dynamic vaProxy, Type variableType, string variableName, object value)
+        {
+            if(value == null) return;
+
+            if (variableType == typeof(int))
+            {
+                vaProxy.SetInt(variableName, (int)value);
+            }
+            else
+            {
+                vaProxy.SetText(variableName, value.ToString());
+            }
         }
 
         private static void WriteToLog(ref dynamic vaProxy, string message, MessageColor color = MessageColor.Blue)
@@ -133,7 +149,7 @@ namespace ED_Router.VoiceAttack
 						var next = EdRouter.Instance.NextWaypoint();
                         if (next != null)
                         {
-                            vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
+                            vaProxy.SetInt("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
                             vaProxy.SetText("next_waypoint", next.System);
 						}
 						break;
@@ -141,7 +157,7 @@ namespace ED_Router.VoiceAttack
 						var prev = EdRouter.Instance.PreviousWaypoint();
                         if (prev != null)
                         {
-                            vaProxy.SetText("jumps", EdRouter.Instance.CurrentWaypoint.Jumps.ToString());
+                            vaProxy.SetInt("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
                             vaProxy.SetText("prev_waypoint", prev.System);
                         }
 						break;
@@ -150,12 +166,21 @@ namespace ED_Router.VoiceAttack
 						break;
 					case "calculate_route":
 						EdRouter.Instance.CalculateRoute();
-						vaProxy.SetText("total_jumps", EdRouter.Instance.Route.TotalJumps.ToString());
+						vaProxy.SetInt("total_jumps", EdRouter.Instance.Route.TotalJumps);
 						break;
 					case "toggle_automate_next_waypoint" :
                         EdRouter.Instance.EnableAutoWaypoint = !EdRouter.Instance.EnableAutoWaypoint;
                         break;
-					default:
+                    case "automate_next_waypoint_on":
+                        EdRouter.Instance.EnableAutoWaypoint = true;
+                        break;
+                    case "automate_next_waypoint_off":
+                        EdRouter.Instance.EnableAutoWaypoint = false;
+                        break;
+                    case "current_waypoint":
+                        WaypointToClipboard();
+                        break;
+                    default:
 						break;
 				}
 				WaypointToClipboard();

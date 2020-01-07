@@ -8,6 +8,7 @@ namespace ED_Router.VoiceAttack.Services
     {
         public EventHandler<RouterEventArgs> EventSent;
         public EventHandler<LoggerEventArgs> LogSent;
+        public EventHandler<SetVariableEventArgs> VariableSent;
 
         public void LogMessage(string message, MessageColor color = MessageColor.Blue)
         {
@@ -21,13 +22,20 @@ namespace ED_Router.VoiceAttack.Services
 
         public void SetVariable<T>(string variableName, T content)
         {
-            // To be implemented if needed.
+            var @event = new SetVariableEventArgs()
+            {
+                Value = content,
+                ValueType = typeof(T),
+                VariableName = variableName
+            };
+            VariableSent?.Invoke(this, @event);
         }
 
         public void Dispose()
         {
             EventSent = null;
             LogSent = null;
+            VariableSent = null;
         }
     }
 }
