@@ -47,6 +47,7 @@
     <Compile Include="Events\LoggerEventArgs.cs" />
     <Compile Include="Events\RouterEventArgs.cs" />
     <Compile Include="Events\SetVariableEventArgs.cs" />
+    <Compile Include="Extensions\SystemJumpExtensions.cs" />
     <Compile Include="Services\IDispatcherAccessor.cs" />
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />

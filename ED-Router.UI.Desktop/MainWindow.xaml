@@ -8,9 +8,10 @@
         xmlns:converters="clr-namespace:ED_Router.UI.Desktop.Converters"
         x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.0.6" MinHeight="438" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.0.6" MinHeight="475" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
     <Window.Resources>
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
     </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
@@ -24,7 +25,7 @@
                     HotkeyManager.RegisterGlobalHotkey="True" />
     </Window.InputBindings>
 
-    <Grid MinHeight="321"
+    <Grid MinHeight="475"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch"
           Margin="10">
@@ -33,23 +34,39 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ProgressBar IsIndeterminate="{Binding Router.IsBusy}"
-                     Grid.Column="0"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Margin="10,0"
-                     VerticalAlignment="Top"
-                     Height="5px"
-                     Grid.Row="0"
-                     Grid.ColumnSpan="2"
-                     IsEnabled="{Binding Router.IsBusy}"/>
+        
+        <StackPanel Orientation="Vertical"
+                    Grid.ColumnSpan="2"
+                    Grid.Column="0"
+                    Grid.Row="0">
+            <ProgressBar IsIndeterminate="{Binding Router.IsBusy}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Margin="10,0"
+                         VerticalAlignment="Top"
+                         Height="5px"
+                         IsEnabled="{Binding Router.IsBusy}"/>
+            <TextBlock Visibility="{Binding Router.IsCurrentStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
+                       Background="Yellow"
+                       Foreground="Black"
+                       Text="Warning: Current Star system is not know to Spanch. Calculate Route will fail if start is empty"/>
+            <TextBlock Visibility="{Binding Router.IsStartStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
+                       Background="DarkRed"
+                       Foreground="White"
+                       Text="Warning: Start star system is not know to Spanch. Calculate Route will fail"/>
+            <TextBlock Visibility="{Binding Router.IsDestinationStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
+                       Background="DarkRed"
+                       Foreground="White"
+                       Text="Warning: Destination star system is not know to Spanch. Calculate Route will fail"/>
+        </StackPanel>
 
         <TextBlock Grid.ColumnSpan="2" 
                    Grid.Column="0"
-                   Grid.Row="0"
+                   Grid.Row="1"
                    Margin="10,5"
                    HorizontalAlignment="Left" 
                    TextWrapping="Wrap">
@@ -69,7 +86,7 @@
             <Run Text=" -&gt; Calculate new Route, taking your current system if in ED (start ED-Router before starting the game)" />
         </TextBlock>
 
-        <Label Grid.Row="1"
+        <Label Grid.Row="2"
                Grid.Column="0"
                Content="From" 
                HorizontalAlignment="Left" 
@@ -77,7 +94,7 @@
                VerticalAlignment="Top"
                Height="26"
                Width="38"/>
-        <DataGrid Grid.Row="1"
+        <DataGrid Grid.Row="2"
                   Grid.Column="1" 
                   HorizontalAlignment="Stretch" 
                   Margin="10" 
@@ -89,7 +106,7 @@
                   IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                   SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}"
                   RowDetailsVisibilityMode="Visible"/>
-        <Label Grid.Row="1"
+        <Label Grid.Row="2"
                Grid.Column="0"
                Content="To" 
                HorizontalAlignment="Left" 
@@ -97,7 +114,7 @@
                VerticalAlignment="Top" 
                Height="26"
                Width="38"/>
-        <Label  Grid.Row="1"
+        <Label  Grid.Row="2"
                 Grid.Column="0"
                 Content="Range (LY)" 
                 HorizontalAlignment="Left" 
@@ -105,7 +122,7 @@
                 VerticalAlignment="Top"
                 Height="26"
                 Width="108"/>
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="2"
                  Grid.Column="0"
                  HorizontalAlignment="Left" 
                  Height="23" Margin="140,70,0,0"
@@ -113,7 +130,7 @@
                  Text="{Binding Router.Range}" 
                  VerticalAlignment="Top"
                  Width="66"/>
-        <Label Grid.Row="1"
+        <Label Grid.Row="2"
                Grid.Column="0"
                Content="Efficiency " 
                HorizontalAlignment="Left"
@@ -121,7 +138,7 @@
                VerticalAlignment="Top"
                Height="26"
                Width="108"/>
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="2"
                  Grid.Column="0"
                  HorizontalAlignment="Left"
                  Height="23" 
@@ -130,7 +147,7 @@
                  Text="{Binding Router.Efficiency}"
                  VerticalAlignment="Top"
                  Width="66"/>
-        <Button Grid.Row="1"
+        <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Calculate"
                 HorizontalAlignment="Left"
@@ -141,7 +158,7 @@
                 Command="{Binding CalculateCommand}"
                 Height="20" />
 
-        <ComboBox Grid.Row="1"
+        <ComboBox Grid.Row="2"
                   Grid.Column="0"
                   HorizontalAlignment="Left" 
                   Margin="53,14,0,0"
@@ -151,9 +168,9 @@
                   IsTextSearchEnabled="True"
                   StaysOpenOnEdit="True" 
                   ItemsSource="{Binding From}"
-                  Text="{Binding FromSearch}" 
+                  Text="{Binding FromSearch, IsAsync=True}" 
                   IsSynchronizedWithCurrentItem="True" />
-        <ComboBox Grid.Row="1"
+        <ComboBox Grid.Row="2"
                   Grid.Column="0"
                   HorizontalAlignment="Left" 
                   Margin="53,41,0,0" 
@@ -165,7 +182,7 @@
                   ItemsSource="{Binding To}"
                   Text="{Binding ToSearch}" 
                   IsSynchronizedWithCurrentItem="True" />
-        <Button Grid.Row="1"
+        <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Next Waypoint"
                 HorizontalAlignment="Left"
@@ -174,7 +191,7 @@
                 Width="177"
                 IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                 Command="{Binding NextWaypointCommand}" />
-        <Button Grid.Row="1"
+        <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Prev Waypoint"
                 HorizontalAlignment="Left" 
@@ -184,7 +201,7 @@
                 IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                 Command="{Binding PrevWaypointCommand}" />
 
-        <Label Grid.Row="1"
+        <Label Grid.Row="2"
                Grid.Column="0"
                Content="Current System:"
                HorizontalAlignment="Left"
@@ -194,23 +211,22 @@
                Width="177"/>
 
 
-        <Label Grid.Row="1"
+        <Label Grid.Row="2"
                Grid.Column="0"
-               Content="{Binding Router.Start}"
+               Content="{Binding Router.CurrentSystem}"
                HorizontalAlignment="Left"
                Margin="10,247,0,0" 
                VerticalAlignment="Top" 
                Height="31" 
                Width="196"
                FontSize="12" 
-               FontWeight="SemiBold"
-               ToolTip="Copy to clipboard"/>
+               FontWeight="SemiBold"/>
 
         <StackPanel HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Margin="10,267,0,0"
                     Orientation="Horizontal"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     Grid.Column="0">
             <Label Content="Enable auto waypoint"/>
             <CheckBox IsChecked="{Binding Router.EnableAutoWaypoint}"

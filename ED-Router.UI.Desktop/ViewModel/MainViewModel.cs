@@ -4,7 +4,9 @@ using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using ED_Router.Events;
 using ED_Router.Services;
 
 namespace ED_Router.UI.Desktop.ViewModel
@@ -42,8 +44,7 @@ namespace ED_Router.UI.Desktop.ViewModel
 		public ObservableCollection<string> To { get; private set; }
 
 		private string _fromSearch;
-
-		public string FromSearch
+        public string FromSearch
 		{
 			get { return _fromSearch; }
 			set
@@ -66,19 +67,12 @@ namespace ED_Router.UI.Desktop.ViewModel
 						if (suggestionSystems.Contains(sys) == false)
 							From.Remove(sys);
 					}
-
-					// pass the Name to the underlying router
-					if (suggestionSystems.Contains(value))
-					{
-						Router.Destination = value;
-					}
 				}
 			}
 		}
 
 		private string _toSearch;
-
-		public string ToSearch
+        public string ToSearch
 		{
 			get { return _toSearch; }
 			set
@@ -101,12 +95,6 @@ namespace ED_Router.UI.Desktop.ViewModel
 						if (suggestionSystems.Contains(sys) == false)
 							To.Remove(sys);
 					}
-
-					// pass the Name to the underlying router
-					if (suggestionSystems.Contains(value))
-					{
-						Router.Destination = value;
-					}
 				}
 			}
 		}
@@ -118,8 +106,6 @@ namespace ED_Router.UI.Desktop.ViewModel
                 Router.Start = FromSearch;
                 Router.Destination = ToSearch;
 				await Router.CalculateRouteAsync();
-                
-                EdRouter.Instance.VoiceAttackAccessor.SetVariable("total_jumps", EdRouter.Instance.Route.TotalJumps);
             }
 			catch (Exception e)
 			{
@@ -138,9 +124,9 @@ namespace ED_Router.UI.Desktop.ViewModel
 		{
             try
             {
-                Router.NextWaypoint();
-                EdRouter.Instance.VoiceAttackAccessor.SetVariable("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
-                EdRouter.Instance.VoiceAttackAccessor.SetVariable("next_waypoint", EdRouter.Instance.CurrentWaypoint.System);
+                var nextSystem = Router.NextWaypoint();
+
+                Router.VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, false, false));
 				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }
@@ -161,10 +147,9 @@ namespace ED_Router.UI.Desktop.ViewModel
 		{
             try
             {
-                Router.PreviousWaypoint();
+                var prevSystem = Router.PreviousWaypoint();
 
-                EdRouter.Instance.VoiceAttackAccessor.SetVariable("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
-                EdRouter.Instance.VoiceAttackAccessor.SetVariable("prev_waypoint", EdRouter.Instance.CurrentWaypoint.System);
+                Router.VoiceAttackAccessor.SendEvent(Previous_Waypoint.Create(prevSystem, false, false));
 				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }
