@@ -8,7 +8,7 @@ namespace ED_Router.Events
 {
     public abstract class RouterEventArgs : EventArgs
     {
-        public bool EmitEvent { get; protected set; }
+        public bool EmitEvent { get; protected set; } = true;
         public IList<VoiceAttackVariable> EventArgs { get; } = new List<VoiceAttackVariable>();
 
         public abstract string EventName { get; }
@@ -48,7 +48,6 @@ namespace ED_Router.Events
             var @event = new Calculate_Route();
 
             @event.EventArgs.Add(VoiceAttackVariable.Create("total_jumps", route.TotalJumps));
-            @event.EventArgs.Add(VoiceAttackVariable.Create("total_waypoints", route.SystemJumps.Count));
 
             if (route.SystemJumps.Count > 0)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ED_Router.Events;
 using libspanch;
 
@@ -14,8 +15,8 @@ namespace ED_Router.Extensions
             }
 
             yield return VoiceAttackVariable.Create("current_waypoint", systemJump.System);
-            yield return VoiceAttackVariable.Create("distance_left", systemJump.DistanceLeft);
-            yield return VoiceAttackVariable.Create("distance_jumped", systemJump.DistanceJumped);
+            yield return VoiceAttackVariable.Create("distance_left", Convert.ToDecimal(systemJump.DistanceLeft));
+            yield return VoiceAttackVariable.Create("distance_jumped", Convert.ToDecimal(systemJump.DistanceJumped));
             yield return VoiceAttackVariable.Create("nb_jumps", systemJump.Jumps);
         }
     }

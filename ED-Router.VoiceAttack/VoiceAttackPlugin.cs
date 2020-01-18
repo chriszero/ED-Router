@@ -86,15 +86,15 @@ namespace ED_Router.VoiceAttack
 
             if (variableType == typeof(int))
             {
-                vaProxy.SetInt($"EDRouter {variableName}", (int)value);
+                vaProxy.SetInt($"EDRouter_{variableName}", (int)value);
             }
             else if(variableType == typeof(decimal))
             {
-                vaProxy.SetDec($"EDRouter {variableName}", (decimal)value);
+                vaProxy.SetDecimal($"EDRouter_{variableName}", (decimal)value);
             }
             else
             {
-                vaProxy.SetText($"EDRouter {variableName}", value.ToString());
+                vaProxy.SetText($"EDRouter_{variableName}", value.ToString());
             }
         }
 
@@ -105,12 +105,6 @@ namespace ED_Router.VoiceAttack
 
         private static void HandleEvents(RouterEventArgs @event, ref dynamic vaProxy)
         {
-            var vaCommandName = $"((EDRouter {@event.EventName.ToLowerInvariant()}))";
-            if (@event.EmitEvent && vaProxy.CommandExists(vaCommandName))
-            {
-                vaProxy.ExecuteCommand(vaCommandName);
-            }
-
             foreach (var voiceAttackVariable in @event.EventArgs)
             {
                 SetVariable(ref vaProxy, voiceAttackVariable.Type, voiceAttackVariable.VariableName, voiceAttackVariable.VariableValue);
@@ -119,6 +113,12 @@ namespace ED_Router.VoiceAttack
             if (@event is IWaypointEvent waypointEvent && waypointEvent.CopyToClipboard)
             {
                 WaypointToClipboard();
+            }
+
+            var vaCommandName = $"((EDRouter {@event.EventName.ToLowerInvariant()}))";
+            if (@event.EmitEvent && vaProxy.CommandExists(vaCommandName))
+            {
+                vaProxy.ExecuteCommand(vaCommandName);
             }
         }
 

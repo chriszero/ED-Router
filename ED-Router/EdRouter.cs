@@ -73,7 +73,7 @@ namespace ED_Router
 
             var nextSystem = NextWaypoint();
 
-            VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, true));
+            VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, true, true));
         }
 
 		private SpanchApi _api;
