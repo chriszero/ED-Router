@@ -86,15 +86,15 @@ namespace ED_Router.VoiceAttack
 
             if (variableType == typeof(int))
             {
-                vaProxy.SetInt($"EDRouter{variableName}", (int)value);
+                vaProxy.SetInt($"EDRouter {variableName}", (int)value);
             }
             else if(variableType == typeof(decimal))
             {
-                vaProxy.SetDec($"EDRouter{variableName}", (decimal)value);
+                vaProxy.SetDec($"EDRouter {variableName}", (decimal)value);
             }
             else
             {
-                vaProxy.SetText($"EDRouter{variableName}", value.ToString());
+                vaProxy.SetText($"EDRouter {variableName}", value.ToString());
             }
         }
 
@@ -192,6 +192,7 @@ namespace ED_Router.VoiceAttack
                         break;
                     default:
 						break;
+
 				}
 				WaypointToClipboard();
 			}

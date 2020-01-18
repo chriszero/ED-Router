@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using ED_Router.Events;
 using ED_Router.Services;
@@ -30,7 +30,18 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			RaisePropertyChanged();
+            if (e.PropertyName == nameof(Router.Start))
+            {
+                _fromSearch = Router.Start;
+				RaisePropertyChanged(() => FromSearch);
+            }
+            else if (e.PropertyName == nameof(Router.Destination))
+            {
+                _toSearch = Router.Destination;
+                RaisePropertyChanged(() => ToSearch);
+			}
+
+            RaisePropertyChanged();
 		}
 
 		public ICommand CalculateCommand { get; private set; }
@@ -40,8 +51,9 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 
 		public EdRouter Router { get; private set; }
-		public ObservableCollection<string> From { get; private set; }
-		public ObservableCollection<string> To { get; private set; }
+
+        public ObservableCollection<string> From { get; private set; }
+        public ObservableCollection<string> To { get; private set; }
 
 		private string _fromSearch;
         public string FromSearch
@@ -54,8 +66,7 @@ namespace ED_Router.UI.Desktop.ViewModel
 				{
 					var suggestionSystems = Router.GetSystems(value);
 
-					// Add new Systems
-					foreach (var sys in suggestionSystems)
+                    foreach (var sys in suggestionSystems)
 					{
 						if (From.Contains(sys) == false)
 							From.Add(sys);

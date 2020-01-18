@@ -53,7 +53,7 @@
             <TextBlock Visibility="{Binding Router.IsCurrentStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
                        Background="Yellow"
                        Foreground="Black"
-                       Text="Warning: Current Star system is not know to Spanch. Calculate Route will fail if start is empty"/>
+                       Text="Warning: Current Star system is not know to Spanch. Calculate Route will fail if From is empty"/>
             <TextBlock Visibility="{Binding Router.IsStartStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
                        Background="DarkRed"
                        Foreground="White"
@@ -158,6 +158,7 @@
                 Command="{Binding CalculateCommand}"
                 Height="20" />
 
+        
         <ComboBox Grid.Row="2"
                   Grid.Column="0"
                   HorizontalAlignment="Left" 
@@ -168,8 +169,8 @@
                   IsTextSearchEnabled="True"
                   StaysOpenOnEdit="True" 
                   ItemsSource="{Binding From}"
-                  Text="{Binding FromSearch, IsAsync=True}" 
-                  IsSynchronizedWithCurrentItem="True" />
+                  Text="{Binding FromSearch}" 
+                  IsSynchronizedWithCurrentItem="False" />
         <ComboBox Grid.Row="2"
                   Grid.Column="0"
                   HorizontalAlignment="Left" 
@@ -181,7 +182,7 @@
                   StaysOpenOnEdit="True"
                   ItemsSource="{Binding To}"
                   Text="{Binding ToSearch}" 
-                  IsSynchronizedWithCurrentItem="True" />
+                  IsSynchronizedWithCurrentItem="False" />
         <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Next Waypoint"
