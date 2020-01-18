@@ -227,8 +227,10 @@ namespace ED_Router
 			get => _range;
 			set
 			{
-				if (_range == value)
-					return;
+                if (Math.Abs(_range - value) < double.Epsilon)
+                {
+                    return;
+                }
 
 				_range = value;
 				SaveSettings();
