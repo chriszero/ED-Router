@@ -1,9 +1,11 @@
 ﻿using ED_Router.UI.Desktop;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using ED_Router.Events;
+using ED_Router.Extensions;
 using ED_Router.Services;
 using ED_Router.UI.Desktop.Services;
 using ED_Router.VoiceAttack.Extensions;
@@ -84,11 +86,15 @@ namespace ED_Router.VoiceAttack
 
             if (variableType == typeof(int))
             {
-                vaProxy.SetInt(variableName, (int)value);
+                vaProxy.SetInt($"EDRouter_{variableName}", (int)value);
+            }
+            else if(variableType == typeof(decimal))
+            {
+                vaProxy.SetDecimal($"EDRouter_{variableName}", (decimal)value);
             }
             else
             {
-                vaProxy.SetText(variableName, value.ToString());
+                vaProxy.SetText($"EDRouter_{variableName}", value.ToString());
             }
         }
 
@@ -97,21 +103,25 @@ namespace ED_Router.VoiceAttack
             vaProxy.WriteToLog($"EdRouter: {message}", color.ToLogColor());
         }
 
-        private static void HandleEvents(RouterEventArgs e, ref dynamic vaProxy)
+        private static void HandleEvents(RouterEventArgs @event, ref dynamic vaProxy)
         {
-            var vaCommandName = $"((EDRouter {e.EventName.ToLowerInvariant()}))";
-            if (vaProxy.CommandExists(vaCommandName))
+            foreach (var voiceAttackVariable in @event.EventArgs)
+            {
+                SetVariable(ref vaProxy, voiceAttackVariable.Type, voiceAttackVariable.VariableName, voiceAttackVariable.VariableValue);
+            }
+
+            if (@event is IWaypointEvent waypointEvent && waypointEvent.CopyToClipboard)
+            {
+                WaypointToClipboard();
+            }
+
+            var vaCommandName = $"((EDRouter {@event.EventName.ToLowerInvariant()}))";
+            if (@event.EmitEvent && vaProxy.CommandExists(vaCommandName))
             {
                 vaProxy.ExecuteCommand(vaCommandName);
             }
-            
-            if (string.IsNullOrEmpty(e.System))
-            {
-                return;
-            }
-
-			WaypointToClipboard();
         }
+
 
         private static void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
@@ -149,16 +159,20 @@ namespace ED_Router.VoiceAttack
 						var next = EdRouter.Instance.NextWaypoint();
                         if (next != null)
                         {
-                            vaProxy.SetInt("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
-                            vaProxy.SetText("next_waypoint", next.System);
+                            foreach (var variable in next.SystemJumpToVoiceAttackVariables())
+                            {
+                                SetVariable(ref vaProxy, variable.Type, variable.VariableName, variable.VariableValue);
+                            }
 						}
 						break;
 					case "prev_waypoint":
 						var prev = EdRouter.Instance.PreviousWaypoint();
                         if (prev != null)
                         {
-                            vaProxy.SetInt("jumps", EdRouter.Instance.CurrentWaypoint.Jumps);
-                            vaProxy.SetText("prev_waypoint", prev.System);
+                            foreach (var variable in prev.SystemJumpToVoiceAttackVariables())
+                            {
+                                SetVariable(ref vaProxy, variable.Type, variable.VariableName, variable.VariableValue);
+                            }
                         }
 						break;
 					case "open_gui":
@@ -166,8 +180,7 @@ namespace ED_Router.VoiceAttack
 						break;
 					case "calculate_route":
 						EdRouter.Instance.CalculateRoute();
-						vaProxy.SetInt("total_jumps", EdRouter.Instance.Route.TotalJumps);
-						break;
+                        break;
 					case "toggle_automate_next_waypoint" :
                         EdRouter.Instance.EnableAutoWaypoint = !EdRouter.Instance.EnableAutoWaypoint;
                         break;
@@ -177,11 +190,9 @@ namespace ED_Router.VoiceAttack
                     case "automate_next_waypoint_off":
                         EdRouter.Instance.EnableAutoWaypoint = false;
                         break;
-                    case "current_waypoint":
-                        WaypointToClipboard();
-                        break;
                     default:
 						break;
+
 				}
 				WaypointToClipboard();
 			}

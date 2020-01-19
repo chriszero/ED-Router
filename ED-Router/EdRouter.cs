@@ -57,7 +57,7 @@ namespace ED_Router
 
 		private void _jMon_NewLocation(string obj)
 		{
-            Start = obj;
+            CurrentSystem = obj;
 
             if (CurrentWaypoint == null || Route == null || Route.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -67,13 +67,13 @@ namespace ED_Router
             if (string.Equals(Route?.DestinationSystem, obj))
             {
 				EnableAutoWaypoint = false;
-                VoiceAttackAccessor.SendEvent(new RouterEventArgs() { EventName = "final_waypoint" });
+                VoiceAttackAccessor.SendEvent(Final_Waypoint.Create());
                 return;
             }
 
             var nextSystem = NextWaypoint();
 
-            VoiceAttackAccessor.SendEvent(new RouterEventArgs() { EventName = "next_waypoint", System = nextSystem.System });
+            VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, true, true));
         }
 
 		private SpanchApi _api;
@@ -111,30 +111,97 @@ namespace ED_Router
             }
         }
 
+        private string _currentSystem;
+        public string CurrentSystem
+        {
+            get => _currentSystem;
+            set
+            {
+                if (string.Equals(_currentSystem, value))
+                {
+                    return;
+                }
 
-		private string _start;
+                _currentSystem = value;
+                OnPropertyChanged();
+
+                IsCurrentStarKnown = !string.IsNullOrEmpty(ValidateWithSpanch(_currentSystem));
+                SaveSettings();
+            }
+        }
+
+        private bool _isCurrentStarKnown;
+        public bool IsCurrentStarKnown
+        {
+            get => _isCurrentStarKnown;
+            set
+            {
+                if (_isCurrentStarKnown == value)
+                {
+                    return;
+                }
+                _isCurrentStarKnown = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isDestinationStarKnown;
+        public bool IsDestinationStarKnown
+        {
+            get => _isDestinationStarKnown;
+            set
+            {
+                if (_isDestinationStarKnown == value)
+                {
+                    return;
+                }
+                _isDestinationStarKnown = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isStartStarKnown;
+        public bool IsStartStarKnown
+        {
+            get => _isStartStarKnown;
+            set
+            {
+                if (_isStartStarKnown == value)
+                {
+                    return;
+                }
+                _isStartStarKnown = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _start;
 		public string Start
 		{
-			get { return _start; }
-			set
+			get => _start;
+            set
 			{
-				if (_start == value)
-					return;
+                if (_start == value)
+                {
+                    return;
+				}
 
-				var list = _api.GetSystems(value);
-                if (list.Contains(value))
-                {
-                    _start = value;
-				}
-                else
-                {
-                    _start = string.Empty;
-				}
-					
+                _start = ValidateWithSpanch(value);
+
+                IsStartStarKnown = !string.IsNullOrEmpty(_start);
+				
 				OnPropertyChanged();
 				SaveSettings();
 			}
 		}
+
+
+        private string ValidateWithSpanch(string system)
+        {
+            var list = _api.GetSystems(system);
+
+            return list.Find(spanchSystem => string.Equals(spanchSystem, system, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
+        }
 
 		public string Destination
 		{
@@ -142,15 +209,15 @@ namespace ED_Router
 			set
 			{
 				if (_destination == value)
-					return;
+                {
+                    return;
+                }
 
-				var list = _api.GetSystems(value);
-				if (list.Contains(value))
-					_destination = value;
-				else
-					_destination = string.Empty;
+                _destination = ValidateWithSpanch(value);
 
-				SaveSettings();
+                IsDestinationStarKnown = !string.IsNullOrEmpty(_destination);
+
+                SaveSettings();
 				OnPropertyChanged();
 			}
 		}
@@ -160,8 +227,10 @@ namespace ED_Router
 			get => _range;
 			set
 			{
-				if (_range == value)
-					return;
+                if (Math.Abs(_range - value) < double.Epsilon)
+                {
+                    return;
+                }
 
 				_range = value;
 				SaveSettings();
@@ -185,6 +254,11 @@ namespace ED_Router
 
         public async Task CalculateRouteAsync()
         {
+            if (Start?.Length == 0)
+            {
+                Start = CurrentSystem;
+            }
+
             if (Start?.Length > 0 && Destination?.Length > 0)
             {
                 try
@@ -196,12 +270,12 @@ namespace ED_Router
                         Route = route;
                         _currentWaypoint = 0;
                         CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-                    }
+                        VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
+					}
 				}
                 finally
                 {
                     IsBusy = false;
-					VoiceAttackAccessor.SendEvent(new RouterEventArgs(){EventName = "calculate_route"});
                 }
             }
             else
@@ -212,6 +286,11 @@ namespace ED_Router
 
 		public void CalculateRoute()
 		{
+            if (Start?.Length == 0)
+            {
+                Start = CurrentSystem;
+            }
+
             if (Start?.Length > 0 && Destination?.Length > 0)
 			{
                 try
@@ -223,12 +302,12 @@ namespace ED_Router
                         Route = route;
                         _currentWaypoint = 0;
                         CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-                    }
+                        VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
+					}
                 }
                 finally
                 {
                     IsBusy = false;
-                    VoiceAttackAccessor.SendEvent(new RouterEventArgs() {EventName = "calculate_route"});
 				}
 			}
 			else
@@ -283,43 +362,57 @@ namespace ED_Router
 			return _api.GetSystems(value);
 		}
 
-		public void SaveSettings()
+		public async void SaveSettings()
 		{
-			Directory.CreateDirectory(Path.GetDirectoryName(settingsFile));
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(settingsFile));
 
-			using (StreamWriter file = File.CreateText(settingsFile))
-			{
-				JObject o = JObject.FromObject(new
-				{
-					settings = new
-					{
-						destination = Destination,
-						start = Start,
-						efficiency = Efficiency,
-						range = Range
-					}
-				});
+                    using (var file = File.CreateText(settingsFile))
+                    {
+                        var o = JObject.FromObject(new
+                        {
+                            settings = new
+                            {
+                                destination = Destination,
+                                start = Start,
+                                efficiency = Efficiency,
+                                range = Range,
+                                current = CurrentSystem,
+                            }
+                        });
 
-				file.Write(o.ToString());
-			}
+                        file.Write(o.ToString());
+                    }
+                });
+            }
+            catch (Exception)
+            {
+            }
 		}
 
 		public void LoadSettings()
 		{
-			try
-			{
-				if (File.Exists(settingsFile))
-				{
-					dynamic o1 = JObject.Parse(File.ReadAllText(settingsFile));
+            try
+            {
+                Task.Run(() =>
+                {
+                    if (File.Exists(settingsFile))
+                    {
+                        dynamic o1 = JObject.Parse(File.ReadAllText(settingsFile));
 
-					_start = o1.settings.start;
-					_destination = o1.settings.destination;
-					_range = o1.settings.range;
-					_efficiency = o1.settings.efficiency;
-				}
+                        Start = o1.settings.start;
+                        Destination = o1.settings.destination;
+                        _range = o1.settings.range;
+                        _efficiency = o1.settings.efficiency;
+                        CurrentSystem = o1.settings.current;
+                    }
+                });
 
-			}
-			catch (Exception) { }
+            }
+            catch (Exception) {  }
 
 		}
 
