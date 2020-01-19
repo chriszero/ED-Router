@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using ED_Router.Events;
 using ED_Router.Services;
@@ -24,22 +25,18 @@ namespace ED_Router.UI.Desktop.ViewModel
 			Router.PropertyChanged += Router_PropertyChanged;
 			From = new ObservableCollection<string>();
 			To = new ObservableCollection<string>();
-			_fromSearch = Router.Start;
-			_toSearch = Router.Destination;
 		}
 
 		private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
             if (e.PropertyName == nameof(Router.Start))
             {
-                _fromSearch = Router.Start;
-				RaisePropertyChanged(() => FromSearch);
+                FromSearch = Router.Start;
             }
             else if (e.PropertyName == nameof(Router.Destination))
             {
-                _toSearch = Router.Destination;
-                RaisePropertyChanged(() => ToSearch);
-			}
+                ToSearch = Router.Destination;
+            }
 
             RaisePropertyChanged();
 		}
@@ -61,24 +58,34 @@ namespace ED_Router.UI.Desktop.ViewModel
 			get { return _fromSearch; }
 			set
 			{
-				_fromSearch = value;
-				if (_fromSearch.Length > 2)
+                if (_fromSearch == value)
+                {
+                    return;
+                }
+                _fromSearch = value;
+				RaisePropertyChanged();
+                if (_fromSearch.Length > 2)
 				{
 					var suggestionSystems = Router.GetSystems(value);
 
                     foreach (var sys in suggestionSystems)
 					{
-						if (From.Contains(sys) == false)
-							From.Add(sys);
+                        if (From.Contains(sys) == false)
+                        {
+                            From.Add(sys);
+						}
 					}
 
 					// Remove systems which not in suggestion list
 					foreach (var sys in From.ToList())
 					{
-						if (suggestionSystems.Contains(sys) == false)
-							From.Remove(sys);
+                        if (suggestionSystems.Contains(sys) == false)
+                        {
+                            From.Remove(sys);
+						}
 					}
 				}
+                
 			}
 		}
 
@@ -88,7 +95,12 @@ namespace ED_Router.UI.Desktop.ViewModel
 			get { return _toSearch; }
 			set
 			{
-				_toSearch = value;
+                if (_toSearch == value)
+                {
+                    return;
+                }
+                _toSearch = value;
+				RaisePropertyChanged();
 				if (_toSearch.Length > 2)
 				{
 					var suggestionSystems = Router.GetSystems(value);
@@ -97,16 +109,22 @@ namespace ED_Router.UI.Desktop.ViewModel
 					foreach (var sys in suggestionSystems)
 					{
 						if (To.Contains(sys) == false)
-							To.Add(sys);
+						{
+                            To.Add(sys);
+						}
+							
 					}
 
 					// Remove systems which not in suggestion list
 					foreach (var sys in To.ToList())
 					{
-						if (suggestionSystems.Contains(sys) == false)
-							To.Remove(sys);
+                        if (suggestionSystems.Contains(sys) == false)
+                        {
+                            To.Remove(sys);
+						}
 					}
 				}
+                
 			}
 		}
 		

@@ -198,6 +198,10 @@ namespace ED_Router
 
         private string ValidateWithSpanch(string system)
         {
+            if (string.IsNullOrEmpty(system))
+            {
+                return system;
+            }
             var list = _api.GetSystems(system);
 
             return list.Find(spanchSystem => string.Equals(spanchSystem, system, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
@@ -362,8 +366,13 @@ namespace ED_Router
 			return _api.GetSystems(value);
 		}
 
+        private bool _isLoading;
 		public async void SaveSettings()
 		{
+            if (_isLoading)
+            {
+                return;
+            }
             try
             {
                 await Task.Run(() =>
@@ -393,11 +402,12 @@ namespace ED_Router
             }
 		}
 
-		public void LoadSettings()
+		public async void LoadSettings()
 		{
             try
             {
-                Task.Run(() =>
+                _isLoading = true;
+                await Task.Run(() =>
                 {
                     if (File.Exists(settingsFile))
                     {
@@ -405,14 +415,21 @@ namespace ED_Router
 
                         Start = o1.settings.start;
                         Destination = o1.settings.destination;
-                        _range = o1.settings.range;
-                        _efficiency = o1.settings.efficiency;
+                        Range = o1.settings.range;
+                        Efficiency = o1.settings.efficiency;
                         CurrentSystem = o1.settings.current;
                     }
                 });
 
             }
-            catch (Exception) {  }
+            catch 
+            {
+                //TODO: log the exception somewhere.
+            }
+            finally
+            {
+                _isLoading = false;
+            }
 
 		}
 
