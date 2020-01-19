@@ -19,8 +19,15 @@ If used as VoiceAttack plugin, copy the files to your VoiceAttack Apps folder ([
 * toggle_automate_next_waypoint, automatically executes next_waypoint while you are in jump to the current waypoint system.
 * automate_next_waypoint_on (enable next waypoint automation)
 * automate_next_waypoint_off (disable next waypoint automation)
-* current_waypoint ( sets the currently selected waypoint to the clipboard again).
 
+## VoiceAttack Variables
+* {INT:EdRouter_total_jumps} : Number of waypoints in the list. Set when calculate_route completes
+* {TXT:EDRouter_current_waypoint} : Current waypoint
+
+Note: The following values are provided by Spanch, your real disatance traveled or number of jumps to do might be different in reality.
+* {DEC:EDRouter_distance_left} : At the next waypoint, you will have this distance left to do (in Ly). Set when calculate_route or next/prev waypoint
+* {DEC:EDRouter_distance_jumped} : At the next waypoint, you will have jumped this distance. Set when calculate_route or next/prev waypoint
+* {INT:EdRouter_nb_jumps} : Number of jumps until you reach the next waypoint. Set when calculate_route or next/prev waypoint completes
 
 ## VoiceAttack Events
 
