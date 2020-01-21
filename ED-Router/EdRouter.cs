@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using ED_Router.Events;
 using ED_Router.Services;
@@ -130,7 +131,7 @@ namespace ED_Router
             }
         }
 
-        private bool _isCurrentStarKnown;
+        private bool _isCurrentStarKnown = true;
         public bool IsCurrentStarKnown
         {
             get => _isCurrentStarKnown;
@@ -145,7 +146,7 @@ namespace ED_Router
             }
         }
 
-        private bool _isDestinationStarKnown;
+        private bool _isDestinationStarKnown = true;
         public bool IsDestinationStarKnown
         {
             get => _isDestinationStarKnown;
@@ -160,7 +161,7 @@ namespace ED_Router
             }
         }
 
-        private bool _isStartStarKnown;
+        private bool _isStartStarKnown = true;
         public bool IsStartStarKnown
         {
             get => _isStartStarKnown;
@@ -173,6 +174,36 @@ namespace ED_Router
                 _isStartStarKnown = value;
                 OnPropertyChanged();
             }
+        }
+
+        public Task SetStartAsync(string system)
+        {
+            return Task.Run(async () =>
+            {
+                if (_start?.Equals(system, StringComparison.OrdinalIgnoreCase) ?? false)
+                {
+                    return;
+                }
+
+                _start = ValidateWithSpanch(system);
+                IsStartStarKnown = !string.IsNullOrEmpty(_start);
+                await SaveSettingsAsync();
+            });
+        }
+
+        public Task SetDestinationAsync(string system)
+        {
+            return Task.Run(async () =>
+            {
+                if (_destination?.Equals(system, StringComparison.OrdinalIgnoreCase) ?? false)
+                {
+                    return;
+                }
+
+                _destination = ValidateWithSpanch(system);
+                IsDestinationStarKnown = !string.IsNullOrEmpty(_destination);
+                await SaveSettingsAsync();
+            });
         }
 
         private string _start;
@@ -366,7 +397,38 @@ namespace ED_Router
 			return _api.GetSystems(value);
 		}
 
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1,1);
         private bool _isLoading;
+        public async Task SaveSettingsAsync()
+        {
+            await _semaphore.WaitAsync();
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(settingsFile));
+
+                using (var file = File.CreateText(settingsFile))
+                {
+                    var o = JObject.FromObject(new
+                    {
+                        settings = new
+                        {
+                            destination = Destination,
+                            start = Start,
+                            efficiency = Efficiency,
+                            range = Range,
+                            current = CurrentSystem,
+                        }
+                    });
+
+                    file.Write(o.ToString());
+                }
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
 		public async void SaveSettings()
 		{
             if (_isLoading)
@@ -375,27 +437,7 @@ namespace ED_Router
             }
             try
             {
-                await Task.Run(() =>
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(settingsFile));
-
-                    using (var file = File.CreateText(settingsFile))
-                    {
-                        var o = JObject.FromObject(new
-                        {
-                            settings = new
-                            {
-                                destination = Destination,
-                                start = Start,
-                                efficiency = Efficiency,
-                                range = Range,
-                                current = CurrentSystem,
-                            }
-                        });
-
-                        file.Write(o.ToString());
-                    }
-                });
+                await Task.Run(SaveSettingsAsync);
             }
             catch (Exception)
             {
@@ -420,7 +462,6 @@ namespace ED_Router
                         CurrentSystem = o1.settings.current;
                     }
                 });
-
             }
             catch 
             {

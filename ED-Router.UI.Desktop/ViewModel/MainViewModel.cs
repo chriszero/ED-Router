@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using ED_Router.Events;
+using ED_Router.Extensions;
 using ED_Router.Services;
 
 namespace ED_Router.UI.Desktop.ViewModel
@@ -29,11 +30,11 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-            if (e.PropertyName == nameof(Router.Start))
+            if (e.PropertyName == nameof(Router.Start) && !(Router.Start ?? string.Empty).Equals(_fromSearch, StringComparison.InvariantCultureIgnoreCase))
             {
                 FromSearch = Router.Start;
             }
-            else if (e.PropertyName == nameof(Router.Destination))
+            else if (e.PropertyName == nameof(Router.Destination) && !(Router.Destination ?? string.Empty).Equals(_toSearch, StringComparison.InvariantCultureIgnoreCase))
             {
                 ToSearch = Router.Destination;
             }
@@ -63,6 +64,7 @@ namespace ED_Router.UI.Desktop.ViewModel
                     return;
                 }
                 _fromSearch = value;
+                Router.SetStartAsync(value).FireAndForget();
 				RaisePropertyChanged();
                 if (_fromSearch.Length > 2)
 				{
@@ -100,6 +102,7 @@ namespace ED_Router.UI.Desktop.ViewModel
                     return;
                 }
                 _toSearch = value;
+                Router.SetDestinationAsync(value).FireAndForget();
 				RaisePropertyChanged();
 				if (_toSearch.Length > 2)
 				{
@@ -132,8 +135,8 @@ namespace ED_Router.UI.Desktop.ViewModel
 		{
             try
 			{
-                Router.Start = FromSearch;
-                Router.Destination = ToSearch;
+                //Router.Start = FromSearch;
+                //Router.Destination = ToSearch;
 				await Router.CalculateRouteAsync();
             }
 			catch (Exception e)

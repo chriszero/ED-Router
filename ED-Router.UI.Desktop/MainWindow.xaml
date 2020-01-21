@@ -12,6 +12,7 @@
     <Window.Resources>
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
+        <converters:VisibleAndMultiConverter x:Key="MultiVisibilityConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
@@ -53,14 +54,44 @@
             <TextBlock Visibility="{Binding Router.IsCurrentStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
                        Background="Yellow"
                        Foreground="Black"
+                       Margin="10,0"
                        Text="Warning: Current Star system is not know to Spanch. Calculate Route will fail if From is empty"/>
-            <TextBlock Visibility="{Binding Router.IsStartStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
-                       Background="DarkRed"
+            <TextBlock Background="DarkRed"
                        Foreground="White"
-                       Text="Warning: Start star system is not know to Spanch. Calculate Route will fail"/>
+                       Text="Warning: Start star system is not know to Spanch. Calculate Route will fail if Current System is not known">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MultiVisibilityConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Router.IsStartStarKnown"
+                                         Converter="{StaticResource BoolToVisibilityConverter}"
+                                         ConverterParameter="I"/>
+                                <Binding Path="Router.IsCurrentStarKnown"
+                                         Converter="{StaticResource BoolToVisibilityConverter}"
+                                         ConverterParameter="I"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+            </TextBlock>
+            <TextBlock Background="Yellow"
+                       Foreground="Black"
+                       Margin="10,0"
+                       Text="Warning: Start star system is not know to Spanch. Calculate Route will attempt to use your Current System">
+                <TextBlock.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiVisibilityConverter}">
+                        <MultiBinding.Bindings>
+                            <Binding Path="Router.IsStartStarKnown"
+                                     Converter="{StaticResource BoolToVisibilityConverter}"
+                                     ConverterParameter="I"/>
+                            <Binding Path="Router.IsCurrentStarKnown"
+                                     Converter="{StaticResource BoolToVisibilityConverter}"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </TextBlock.Visibility>
+            </TextBlock>
             <TextBlock Visibility="{Binding Router.IsDestinationStarKnown, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"
                        Background="DarkRed"
                        Foreground="White"
+                       Margin="10,0"
                        Text="Warning: Destination star system is not know to Spanch. Calculate Route will fail"/>
         </StackPanel>
 
