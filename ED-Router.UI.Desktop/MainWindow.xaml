@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:ED_Router.UI.Desktop.Converters"
         x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.0.7" MinHeight="475" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.0.8" MinHeight="475" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
     <Window.Resources>
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
@@ -56,7 +56,7 @@
                        Text="Warning: Current Star system is not know to Spanch. Calculate Route will fail if From is empty"/>
             <TextBlock Background="DarkRed"
                        Foreground="White"
-                       Text="Warning: Start star system is not know to Spanch. Calculate Route will fail if Current System is not known">
+                       Text="Warning: Start star system is not know to Spanch. Calculate Route will fail">
                     <TextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource MultiVisibilityConverter}">
                             <MultiBinding.Bindings>
