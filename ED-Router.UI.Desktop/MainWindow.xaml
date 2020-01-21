@@ -26,10 +26,8 @@
                     HotkeyManager.RegisterGlobalHotkey="True" />
     </Window.InputBindings>
 
-    <Grid MinHeight="475"
-          HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch"
-          Margin="10">
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
