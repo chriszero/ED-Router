@@ -78,7 +78,9 @@
     </ApplicationDefinition>
     <Compile Include="Converters\BoolInverterConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Converters\VisibleAndMultiConverter.cs" />
+    <Compile Include="Helper\ProcessHelper.cs" />
     <Compile Include="Services\DispatcherAccessor.cs" />
     <Compile Include="Services\DummyVoiceAttackAccessor.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

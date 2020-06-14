@@ -11,8 +11,9 @@
         Title="ED-Router 0.0.8" MinHeight="475" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
     <Window.Resources>
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:VisibleAndMultiConverter x:Key="MultiVisibilityConverter"/>
+        <converters:NullVisibilityConverter x:Key="NullVisibilityConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
@@ -114,6 +115,14 @@
             </Span>
             <Run Text=" -&gt; Calculate new Route, taking your current system if in ED (start ED-Router before starting the game)" />
         </TextBlock>
+
+        <Button Grid.Column="1"
+                Grid.Row="1"
+                Margin="10,5"
+                HorizontalAlignment="Right"
+                Content="Open on Spansh"
+                Visibility="{Binding Router.SpanchUri, Converter={StaticResource NullVisibilityConverter}}"
+                Command="{Binding OpenOnSpansh}"/>
 
         <Label Grid.Row="2"
                Grid.Column="0"

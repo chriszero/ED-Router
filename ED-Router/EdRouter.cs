@@ -226,6 +226,21 @@ namespace ED_Router
 			}
 		}
 
+        private string _spanchUri;
+        public string SpanchUri
+        {
+            get => _spanchUri;
+            set
+            {
+                if (_spanchUri == value)
+                {
+                    return;
+                }
+
+                _spanchUri = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string ValidateWithSpanch(string system)
         {
@@ -300,14 +315,8 @@ namespace ED_Router
                 {
                     IsBusy = true;
                     var route = await Task.Run(() => _api.PlotRouteAsync(Start, Destination, Range, Efficiency));
-                    if (route.TotalJumps > 0)
-                    {
-                        Route = route;
-                        _currentWaypoint = 0;
-                        CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-                        VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
-					}
-				}
+                    HandleRouteResponse(route);
+                }
                 finally
                 {
                     IsBusy = false;
@@ -332,13 +341,7 @@ namespace ED_Router
                 {
                     IsBusy = true;
                     var route = _api.PlotRoute(Start, Destination, Range, Efficiency);
-                    if (route.TotalJumps > 0)
-                    {
-                        Route = route;
-                        _currentWaypoint = 0;
-                        CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-                        VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
-					}
+                    HandleRouteResponse(route);
                 }
                 finally
                 {
@@ -351,7 +354,21 @@ namespace ED_Router
             }
 		}
 
-		public SystemJump NextWaypoint()
+        private void HandleRouteResponse(Route route)
+        {
+            if (route.TotalJumps <= 0)
+            {
+                return;
+            }
+
+            Route = route;
+            _currentWaypoint = 0;
+            CurrentWaypoint = Route.SystemJumps.ElementAt(0);
+            SpanchUri = route.Uri;
+            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
+        }
+
+        public SystemJump NextWaypoint()
 		{
             if (Route == null)
             {

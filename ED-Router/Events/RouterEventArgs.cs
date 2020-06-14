@@ -57,7 +57,9 @@ namespace ED_Router.Events
                     @event.EventArgs.Add(variable);
                 }
             }
-            
+
+            @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", route.Uri));
+
             return @event;
         }
     }

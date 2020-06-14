@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows;
 using ED_Router.Events;
 using ED_Router.Extensions;
 using ED_Router.Services;
+using ED_Router.UI.Desktop.Helper;
 
 namespace ED_Router.UI.Desktop.ViewModel
 {
@@ -22,13 +24,26 @@ namespace ED_Router.UI.Desktop.ViewModel
 			PrevWaypointCommand = new RelayCommand(PrevWaypointMethod);
 			CopyToClipboardCommand = new RelayCommand(WaypointToClipboard);
 
+            OpenOnSpansh = new RelayCommand(OpenOnSpanshWebsite);
+
 			Router = EdRouter.Instance;
 			Router.PropertyChanged += Router_PropertyChanged;
 			From = new ObservableCollection<string>();
 			To = new ObservableCollection<string>();
 		}
 
-		private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OpenOnSpanshWebsite()
+        {
+            if (string.IsNullOrEmpty(Router.SpanchUri))
+            {
+                MessageBox.Show("Unable to open the website");
+                return;
+            }
+
+            ProcessHelper.ExecuteProcessUnElevated(Router.SpanchUri,"");
+        }
+
+        private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
             if (e.PropertyName == nameof(Router.Start) && !(Router.Start ?? string.Empty).Equals(_fromSearch, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -46,6 +61,8 @@ namespace ED_Router.UI.Desktop.ViewModel
 		public ICommand NextWaypointCommand { get; private set; }
 		public ICommand PrevWaypointCommand { get; private set; }
 		public ICommand CopyToClipboardCommand { get; private set; }
+
+		public ICommand OpenOnSpansh { get; private set; }
 
 
 		public EdRouter Router { get; private set; }

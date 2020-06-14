@@ -8,7 +8,7 @@ namespace libspanch
 {
     public class SpanchApi
     {
-        private readonly string baseUri = "https://spansh.co.uk/api/";
+        private const string baseUri = "https://spansh.co.uk/api/";
 
         /// <summary>
         /// If response is null, the request may be queued by the server, repeat request 
@@ -115,6 +115,7 @@ namespace libspanch
                 await Task.Delay(1000);
             }
 
+            routeResponse.Result.Id = response.Job;
             return routeResponse.Result;
         }
 
