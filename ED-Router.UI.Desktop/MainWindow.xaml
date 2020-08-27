@@ -13,7 +13,7 @@
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:VisibleAndMultiConverter x:Key="MultiVisibilityConverter"/>
-        <converters:NullVisibilityConverter x:Key="NullVisibilityConverter"/>
+        <converters:AnyToBoolConverter x:Key="AnyToBoolConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
@@ -116,14 +116,6 @@
             <Run Text=" -&gt; Calculate new Route, taking your current system if in ED (start ED-Router before starting the game)" />
         </TextBlock>
 
-        <Button Grid.Column="1"
-                Grid.Row="1"
-                Margin="10,5"
-                HorizontalAlignment="Right"
-                Content="Open on Spansh"
-                Visibility="{Binding Router.SpanchUri, Converter={StaticResource NullVisibilityConverter}}"
-                Command="{Binding OpenOnSpansh}"/>
-
         <Label Grid.Row="2"
                Grid.Column="0"
                Content="From" 
@@ -221,11 +213,22 @@
                   ItemsSource="{Binding To}"
                   Text="{Binding ToSearch}" 
                   IsSynchronizedWithCurrentItem="False" />
+
+        <Button Grid.Column="0"
+                Grid.Row="2"
+                Margin="10,177,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="177"
+                Content="Open on Spansh"
+                IsEnabled="{Binding Router.SpanchUri, Converter={StaticResource AnyToBoolConverter}, Mode=OneWay}"
+                Command="{Binding OpenOnSpansh}"/>
+
         <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Next Waypoint"
                 HorizontalAlignment="Left"
-                Margin="10,177,0,0" 
+                Margin="10,203,0,0" 
                 VerticalAlignment="Top"
                 Width="177"
                 IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
@@ -234,7 +237,7 @@
                 Grid.Column="0"
                 Content="Prev Waypoint"
                 HorizontalAlignment="Left" 
-                Margin="10,203,0,0"
+                Margin="10,227,0,0"
                 VerticalAlignment="Top" 
                 Width="177"
                 IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
@@ -244,7 +247,7 @@
                Grid.Column="0"
                Content="Current System:"
                HorizontalAlignment="Left"
-               Margin="10,227,0,0" 
+               Margin="10,247,0,0" 
                VerticalAlignment="Top"
                RenderTransformOrigin="0.518,-0.333"
                Width="177"/>
@@ -254,7 +257,7 @@
                Grid.Column="0"
                Content="{Binding Router.CurrentSystem}"
                HorizontalAlignment="Left"
-               Margin="10,247,0,0" 
+               Margin="10,267,0,0" 
                VerticalAlignment="Top" 
                Height="31" 
                Width="196"
@@ -263,7 +266,7 @@
 
         <StackPanel HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Margin="10,267,0,0"
+                    Margin="10,287,0,0"
                     Orientation="Horizontal"
                     Grid.Row="2"
                     Grid.Column="0">
