@@ -24,10 +24,11 @@ If used as VoiceAttack plugin, copy the files to your VoiceAttack Apps folder ([
 * {INT:EdRouter_total_jumps} : Number of waypoints in the list. Set when calculate_route completes
 * {TXT:EDRouter_current_waypoint} : Current waypoint
 
-Note: The following values are provided by Spanch, your real disatance traveled or number of jumps to do might be different in reality.
+Note: The following values are provided by Spansh, your real disatance traveled or number of jumps to do might be different in reality.
 * {DEC:EDRouter_distance_left} : At the next waypoint, you will have this distance left to do (in Ly). Set when calculate_route or next/prev waypoint
 * {DEC:EDRouter_distance_jumped} : At the next waypoint, you will have jumped this distance. Set when calculate_route or next/prev waypoint
 * {INT:EdRouter_nb_jumps} : Number of jumps until you reach the next waypoint. Set when calculate_route or next/prev waypoint completes
+* {TXT:EDRouter_current_waypoint} : the URL to open the route on the Spansh website for the currently calculated route. 
 
 ## VoiceAttack Events
 
