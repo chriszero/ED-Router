@@ -34,13 +34,13 @@ namespace ED_Router.UI.Desktop.ViewModel
 
         private void OpenOnSpanshWebsite()
         {
-            if (string.IsNullOrEmpty(Router.SpanchUri))
+            if (string.IsNullOrEmpty(Router.SpanshUri))
             {
                 MessageBox.Show("Unable to open the website");
                 return;
             }
 
-            ProcessHelper.ExecuteProcessUnElevated(Router.SpanchUri,"");
+            ProcessHelper.ExecuteProcessUnElevated(Router.SpanshUri,"");
         }
 
         private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

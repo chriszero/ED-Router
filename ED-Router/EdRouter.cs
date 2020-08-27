@@ -226,18 +226,18 @@ namespace ED_Router
 			}
 		}
 
-        private string _spanchUri;
-        public string SpanchUri
+        private string _spanshUri;
+        public string SpanshUri
         {
-            get => _spanchUri;
+            get => _spanshUri;
             set
             {
-                if (_spanchUri == value)
+                if (_spanshUri == value)
                 {
                     return;
                 }
 
-                _spanchUri = value;
+                _spanshUri = value;
                 OnPropertyChanged();
             }
         }
@@ -364,7 +364,7 @@ namespace ED_Router
             Route = route;
             _currentWaypoint = 0;
             CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-            SpanchUri = route.Uri;
+            SpanshUri = route.Uri;
             VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
         }
 

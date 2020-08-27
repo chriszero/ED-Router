@@ -221,7 +221,7 @@
                 VerticalAlignment="Top"
                 Width="177"
                 Content="Open on Spansh"
-                IsEnabled="{Binding Router.SpanchUri, Converter={StaticResource AnyToBoolConverter}, Mode=OneWay}"
+                IsEnabled="{Binding Router.SpanshUri, Converter={StaticResource AnyToBoolConverter}, Mode=OneWay}"
                 Command="{Binding OpenOnSpansh}"/>
 
         <Button Grid.Row="2"
