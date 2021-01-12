@@ -66,7 +66,7 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 
 		public EdRouter Router { get; private set; }
-
+        
         public ObservableCollection<string> From { get; private set; }
         public ObservableCollection<string> To { get; private set; }
 
@@ -173,9 +173,9 @@ namespace ED_Router.UI.Desktop.ViewModel
 		{
             try
             {
-                var nextSystem = Router.NextWaypoint();
+                var (nextSystem, _) = Router.NextWaypoint();
 
-                Router.VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, false, false));
+                Router.VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, Router.CurrentWaypointIndex, Router.RouteTraveledPercent,false, false));
 				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }
@@ -196,9 +196,9 @@ namespace ED_Router.UI.Desktop.ViewModel
 		{
             try
             {
-                var prevSystem = Router.PreviousWaypoint();
+                var (prevSystem, _) = Router.PreviousWaypoint();
 
-                Router.VoiceAttackAccessor.SendEvent(Previous_Waypoint.Create(prevSystem, false, false));
+                Router.VoiceAttackAccessor.SendEvent(Previous_Waypoint.Create(prevSystem, Router.CurrentWaypointIndex, Router.RouteTraveledPercent, false, false));
 				WaypointToClipboard();
                 RaisePropertyChanged(() => Router);
             }

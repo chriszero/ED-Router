@@ -72,9 +72,9 @@ namespace ED_Router
                 return;
             }
 
-            var nextSystem = NextWaypoint();
+            var (nextSystem, current) = NextWaypoint();
 
-            VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, true, true));
+            VoiceAttackAccessor.SendEvent(Next_Waypoint.Create(nextSystem, _currentWaypoint,RouteTraveledPercent,true, true));
         }
 
 		private SpanchApi _api;
@@ -86,7 +86,11 @@ namespace ED_Router
 		private Route _route;
 		private SystemJump _currentWaypoint1;
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        public int CurrentWaypointIndex => _currentWaypoint;
+
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint + 1d) / Route.SystemJumps.Count)*100, 2);
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		public Route Route
 		{
@@ -368,32 +372,32 @@ namespace ED_Router
             VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
         }
 
-        public SystemJump NextWaypoint()
+        public (SystemJump next, int? id) NextWaypoint()
 		{
             if (Route == null)
             {
-                return null;
+                return (null, null);
             }
 			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemJumps.Count)
 			{
 				var next = Route.SystemJumps[++_currentWaypoint];
 				CurrentWaypoint = next;
 			}
-			return CurrentWaypoint;
+			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public SystemJump PreviousWaypoint()
+		public (SystemJump previous, int? id) PreviousWaypoint()
 		{
             if (Route == null)
             {
-                return null;
+                return (null, null);
             }
 			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
 				var next = Route.SystemJumps[--_currentWaypoint];
 				CurrentWaypoint = next;
 			}
-			return CurrentWaypoint;
+			return (CurrentWaypoint, _currentWaypoint);
 		}
 
 		public SystemJump CurrentWaypoint

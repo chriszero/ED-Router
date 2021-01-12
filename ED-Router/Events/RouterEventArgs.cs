@@ -57,7 +57,8 @@ namespace ED_Router.Events
                     @event.EventArgs.Add(variable);
                 }
             }
-
+            @event.EventArgs.Add(VoiceAttackVariable.Create("travel_percent", (decimal)0));
+            @event.EventArgs.Add(VoiceAttackVariable.Create("jump_number", 1));
             @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", route.Uri));
 
             return @event;
@@ -73,7 +74,7 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Next_Waypoint Create(SystemJump currentWaypoint, bool copyToClipboard = false, bool emitEvent = false)
+        public static Next_Waypoint Create(SystemJump currentWaypoint, int jumpIndex, double travelPercent,bool copyToClipboard = false, bool emitEvent = false)
         {
             var @event = new Next_Waypoint()
             {
@@ -85,6 +86,9 @@ namespace ED_Router.Events
                 @event.EventArgs.Add(variable);
             }
 
+            @event.EventArgs.Add(VoiceAttackVariable.Create("travel_percent", Convert.ToDecimal(travelPercent)));
+            @event.EventArgs.Add(VoiceAttackVariable.Create("jump_number", jumpIndex+1));
+
             return @event;
         }
     }
@@ -93,7 +97,7 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Previous_Waypoint Create(SystemJump currentWaypoint, bool copyToClipboard = false, bool emitEvent = false)
+        public static Previous_Waypoint Create(SystemJump currentWaypoint, int jumpIndex, double travelPercent, bool copyToClipboard = false, bool emitEvent = false)
         {
             var @event = new Previous_Waypoint()
             {
@@ -101,7 +105,14 @@ namespace ED_Router.Events
                 EmitEvent = emitEvent
             };
 
-            foreach (var variable in currentWaypoint.SystemJumpToVoiceAttackVariables())
+            var variables = currentWaypoint.SystemJumpToVoiceAttackVariables()
+                .Concat(new[]
+                {
+                    VoiceAttackVariable.Create("travel_percent", Convert.ToDecimal(travelPercent)),
+                    VoiceAttackVariable.Create("jump_number", jumpIndex + 1)
+                });
+
+            foreach (var variable in variables)
             {
                 @event.EventArgs.Add(variable);
             }

@@ -156,20 +156,31 @@ namespace ED_Router.VoiceAttack
 				switch (context)
 				{
 					case "next_waypoint":
-						var next = EdRouter.Instance.NextWaypoint();
+						var (next, jumpIndexNext) = EdRouter.Instance.NextWaypoint();
                         if (next != null)
                         {
-                            foreach (var variable in next.SystemJumpToVoiceAttackVariables())
+                            var nextJumpStats = next.SystemJumpToVoiceAttackVariables().Concat(new[]
+                            {
+                                VoiceAttackVariable.Create("jump_number", jumpIndexNext + 1),
+                                VoiceAttackVariable.Create("travel_percent", Convert.ToDecimal(EdRouter.Instance.RouteTraveledPercent))
+                            });
+
+                            foreach (var variable in nextJumpStats)
                             {
                                 SetVariable(ref vaProxy, variable.Type, variable.VariableName, variable.VariableValue);
                             }
-						}
+                        }
 						break;
 					case "prev_waypoint":
-						var prev = EdRouter.Instance.PreviousWaypoint();
+                        var (prev, jumpIndexPrev) = EdRouter.Instance.PreviousWaypoint();
                         if (prev != null)
                         {
-                            foreach (var variable in prev.SystemJumpToVoiceAttackVariables())
+                            var prevJumpStats = prev.SystemJumpToVoiceAttackVariables().Concat(new[]
+                                {
+                                    VoiceAttackVariable.Create("jump_number", jumpIndexPrev + 1),
+                                    VoiceAttackVariable.Create("travel_percent", Convert.ToDecimal(EdRouter.Instance.RouteTraveledPercent))
+                                });
+                            foreach (var variable in prevJumpStats)
                             {
                                 SetVariable(ref vaProxy, variable.Type, variable.VariableName, variable.VariableValue);
                             }
