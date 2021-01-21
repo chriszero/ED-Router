@@ -23,6 +23,8 @@ If used as VoiceAttack plugin, copy the files to your VoiceAttack Apps folder ([
 ## VoiceAttack Variables
 * {INT:EdRouter_total_jumps} : Number of waypoints in the list. Set when calculate_route completes
 * {TXT:EDRouter_current_waypoint} : Current waypoint
+* {INT:EDRouter_jump_number} : Rank in the sequence of waypoints. This number will increase or decrease as you change the currently selected waypoint.
+* {DEC:EDRouter_travel_percent } : % of waypoints that where reached since the start of the route.
 
 Note: The following values are provided by Spansh, your real disatance traveled or number of jumps to do might be different in reality.
 * {DEC:EDRouter_distance_left} : At the next waypoint, you will have this distance left to do (in Ly). Set when calculate_route or next/prev waypoint
