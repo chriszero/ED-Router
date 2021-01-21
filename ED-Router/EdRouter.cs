@@ -88,7 +88,7 @@ namespace ED_Router
 
         public int CurrentWaypointIndex => _currentWaypoint;
 
-        public double RouteTraveledPercent => Math.Round(((_currentWaypoint + 1d) / Route.SystemJumps.Count)*100, 2);
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemJumps.Count)*100, 2);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
