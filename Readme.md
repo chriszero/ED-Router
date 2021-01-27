@@ -7,6 +7,10 @@ BETA version! You might have bugs.
 
 ## Installing ED-Router
 
+https://github.com/dominiquesavoie/ED-Router/releases/download/0.0.10/ED-Router.0.0.10.zip (Latest version)
+https://github.com/dominiquesavoie/ED-Router/releases/download/0.0.10/ed-router.vap (latest profile sample)
+
+
 If used as stand alone, just save it on your desktop and start.
 If used as VoiceAttack plugin, copy the files to your VoiceAttack Apps folder ([PROGRAMFILES]\VoiceAttack\Apps\edrouter and enable plugin support
 
