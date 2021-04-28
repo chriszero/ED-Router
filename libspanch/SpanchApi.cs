@@ -60,7 +60,7 @@ namespace libspanch
             return response.Data;
         }
 
-        public Route PlotRoute(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
+        public NeutronPlotterRoute PlotRoute(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
         {
             var request = new RestRequest("route");
             request.AddParameter("efficiency", efficiency)
@@ -73,7 +73,7 @@ namespace libspanch
             var routeRequest = new RestRequest("results/{job}");
             routeRequest.AddParameter("job", response.Job, ParameterType.UrlSegment);
 
-            var routeResponse = Execute<RequestResult<Route>>(routeRequest);
+            var routeResponse = Execute<RequestResult<NeutronPlotterRoute>>(routeRequest);
 			if(routeResponse.Error != null)
 			{
 				throw new RouteException(routeResponse.Error);
@@ -81,7 +81,7 @@ namespace libspanch
 
             while (routeResponse.Status.ToLower() == "queued")
             {
-                routeResponse = Execute<RequestResult<Route>>(routeRequest);
+                routeResponse = Execute<RequestResult<NeutronPlotterRoute>>(routeRequest);
                 // wait few ms? limit via time?
                 Thread.Sleep(1000);
             }
@@ -89,7 +89,7 @@ namespace libspanch
             return routeResponse.Result;
         }
 
-        public async Task<Route> PlotRouteAsync(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
+        public async Task<NeutronPlotterRoute> PlotRouteAsync(string startSystem, string destinationSystem, double jumpRange, int efficiency = 60)
         {
             var request = new RestRequest("route");
             request.AddParameter("efficiency", efficiency)
@@ -102,7 +102,7 @@ namespace libspanch
             var routeRequest = new RestRequest("results/{job}");
             routeRequest.AddParameter("job", response.Job, ParameterType.UrlSegment);
 
-            var routeResponse = await ExecuteAsync<RequestResult<Route>>(routeRequest);
+            var routeResponse = await ExecuteAsync<RequestResult<NeutronPlotterRoute>>(routeRequest);
             if (routeResponse.Error != null)
             {
                 throw new RouteException(routeResponse.Error);
@@ -110,7 +110,7 @@ namespace libspanch
 
             while (routeResponse.Status.ToLower() == "queued")
             {
-                routeResponse = await ExecuteAsync<RequestResult<Route>>(routeRequest);
+                routeResponse = await ExecuteAsync<RequestResult<NeutronPlotterRoute>>(routeRequest);
                 // wait few ms? limit via time?
                 await Task.Delay(1000);
             }

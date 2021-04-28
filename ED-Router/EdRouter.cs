@@ -60,12 +60,12 @@ namespace ED_Router
 		{
             CurrentSystem = obj;
 
-            if (CurrentWaypoint == null || Route == null || Route.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
+            if (CurrentWaypoint == null || NeutronPlotterRoute == null || NeutronPlotterRoute.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            if (string.Equals(Route?.DestinationSystem, obj))
+            if (string.Equals(NeutronPlotterRoute?.DestinationSystem, obj))
             {
 				EnableAutoWaypoint = false;
                 VoiceAttackAccessor.SendEvent(Final_Waypoint.Create());
@@ -83,21 +83,21 @@ namespace ED_Router
 		private string _destination;
 		private double _range;
 		private int _efficiency;
-		private Route _route;
-		private SystemJump _currentWaypoint1;
+		private NeutronPlotterRoute _neutronPlotterRoute;
+		private NeutronPlotterSystem _currentWaypoint1;
 
         public int CurrentWaypointIndex => _currentWaypoint;
 
-        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemJumps.Count)*100, 2);
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / NeutronPlotterRoute.SystemJumps.Count)*100, 2);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-		public Route Route
+		public NeutronPlotterRoute NeutronPlotterRoute
 		{
-			get => _route;
+			get => _neutronPlotterRoute;
 			set
 			{
-				_route = value;
+				_neutronPlotterRoute = value;
 				OnPropertyChanged();
 			}
 		}
@@ -358,49 +358,49 @@ namespace ED_Router
             }
 		}
 
-        private void HandleRouteResponse(Route route)
+        private void HandleRouteResponse(NeutronPlotterRoute neutronPlotterRoute)
         {
-            if (route.TotalJumps <= 0)
+            if (neutronPlotterRoute.TotalJumps <= 0)
             {
                 return;
             }
 
-            Route = route;
+            NeutronPlotterRoute = neutronPlotterRoute;
             _currentWaypoint = 0;
-            CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-            SpanshUri = route.Uri;
-            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
+            CurrentWaypoint = NeutronPlotterRoute.SystemJumps.ElementAt(0);
+            SpanshUri = neutronPlotterRoute.Uri;
+            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(neutronPlotterRoute));
         }
 
-        public (SystemJump next, int? id) NextWaypoint()
+        public (NeutronPlotterSystem next, int? id) NextWaypoint()
 		{
-            if (Route == null)
+            if (NeutronPlotterRoute == null)
             {
                 return (null, null);
             }
-			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemJumps.Count)
+			if (NeutronPlotterRoute.TotalJumps > 0 && _currentWaypoint + 1 < NeutronPlotterRoute.SystemJumps.Count)
 			{
-				var next = Route.SystemJumps[++_currentWaypoint];
+				var next = NeutronPlotterRoute.SystemJumps[++_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public (SystemJump previous, int? id) PreviousWaypoint()
+		public (NeutronPlotterSystem previous, int? id) PreviousWaypoint()
 		{
-            if (Route == null)
+            if (NeutronPlotterRoute == null)
             {
                 return (null, null);
             }
-			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
+			if (NeutronPlotterRoute.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
-				var next = Route.SystemJumps[--_currentWaypoint];
+				var next = NeutronPlotterRoute.SystemJumps[--_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public SystemJump CurrentWaypoint
+		public NeutronPlotterSystem CurrentWaypoint
 		{
 			get => _currentWaypoint1;
 			private set

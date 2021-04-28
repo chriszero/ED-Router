@@ -43,15 +43,15 @@ namespace ED_Router.Events
 
     public class Calculate_Route : RouterEventArgs<Calculate_Route>
     {
-        public static Calculate_Route Create(Route route)
+        public static Calculate_Route Create(NeutronPlotterRoute neutronPlotterRoute)
         {
             var @event = new Calculate_Route();
 
-            @event.EventArgs.Add(VoiceAttackVariable.Create("total_jumps", route.TotalJumps));
+            @event.EventArgs.Add(VoiceAttackVariable.Create("total_jumps", neutronPlotterRoute.TotalJumps));
 
-            if (route.SystemJumps.Count > 0)
+            if (neutronPlotterRoute.SystemJumps.Count > 0)
             {
-                var currentWaypoint = route.SystemJumps.ElementAt(0);
+                var currentWaypoint = neutronPlotterRoute.SystemJumps.ElementAt(0);
                 foreach (var variable in currentWaypoint.SystemJumpToVoiceAttackVariables())
                 {
                     @event.EventArgs.Add(variable);
@@ -59,7 +59,7 @@ namespace ED_Router.Events
             }
             @event.EventArgs.Add(VoiceAttackVariable.Create("travel_percent", (decimal)0));
             @event.EventArgs.Add(VoiceAttackVariable.Create("jump_number", 1));
-            @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", route.Uri));
+            @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", neutronPlotterRoute.Uri));
 
             return @event;
         }
@@ -74,7 +74,7 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Next_Waypoint Create(SystemJump currentWaypoint, int jumpIndex, double travelPercent,bool copyToClipboard = false, bool emitEvent = false)
+        public static Next_Waypoint Create(NeutronPlotterSystem currentWaypoint, int jumpIndex, double travelPercent,bool copyToClipboard = false, bool emitEvent = false)
         {
             var @event = new Next_Waypoint()
             {
@@ -97,7 +97,7 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Previous_Waypoint Create(SystemJump currentWaypoint, int jumpIndex, double travelPercent, bool copyToClipboard = false, bool emitEvent = false)
+        public static Previous_Waypoint Create(NeutronPlotterSystem currentWaypoint, int jumpIndex, double travelPercent, bool copyToClipboard = false, bool emitEvent = false)
         {
             var @event = new Previous_Waypoint()
             {
