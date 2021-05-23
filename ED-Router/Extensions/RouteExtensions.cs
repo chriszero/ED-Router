@@ -32,7 +32,7 @@ namespace ED_Router.Extensions
                 HasNeutronStar = neutronPlotterSystem.NeutronStar,
                 Jumps = neutronPlotterSystem.Jumps,
                 Name = neutronPlotterSystem.System,
-                Rank = index
+                Id = index+1
             };
         }
     }

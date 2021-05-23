@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ED_Router.Events;
+using ED_Router.Extensions;
+using ED_Router.Model;
 using ED_Router.Services;
 using libspanch;
 using Newtonsoft.Json.Linq;
@@ -60,12 +62,12 @@ namespace ED_Router
 		{
             CurrentSystem = obj;
 
-            if (CurrentWaypoint == null || NeutronPlotterRoute == null || NeutronPlotterRoute.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
+            if (CurrentWaypoint == null || Route == null || Route.SystemsInRoute.Length == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.Name, obj, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            if (string.Equals(NeutronPlotterRoute?.DestinationSystem, obj))
+            if (string.Equals(Route?.DestinationSystem, obj))
             {
 				EnableAutoWaypoint = false;
                 VoiceAttackAccessor.SendEvent(Final_Waypoint.Create());
@@ -83,21 +85,21 @@ namespace ED_Router
 		private string _destination;
 		private double _range;
 		private int _efficiency;
-		private NeutronPlotterRoute _neutronPlotterRoute;
-		private NeutronPlotterSystem _currentWaypoint1;
+		private FlightPlan _route;
+		private Model.System _currentWaypoint1;
 
         public int CurrentWaypointIndex => _currentWaypoint;
 
-        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / NeutronPlotterRoute.SystemJumps.Count)*100, 2);
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemsInRoute.Length)*100, 2);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-		public NeutronPlotterRoute NeutronPlotterRoute
+		public FlightPlan Route
 		{
-			get => _neutronPlotterRoute;
+			get => _route;
 			set
 			{
-				_neutronPlotterRoute = value;
+				_route = value;
 				OnPropertyChanged();
 			}
 		}
@@ -365,42 +367,42 @@ namespace ED_Router
                 return;
             }
 
-            NeutronPlotterRoute = neutronPlotterRoute;
+            Route = neutronPlotterRoute.ToFlightPlan();
             _currentWaypoint = 0;
-            CurrentWaypoint = NeutronPlotterRoute.SystemJumps.ElementAt(0);
-            SpanshUri = neutronPlotterRoute.Uri;
-            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(neutronPlotterRoute));
+            CurrentWaypoint = Route.SystemsInRoute[0];
+            SpanshUri = Route.Uri;
+            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(Route));
         }
 
-        public (NeutronPlotterSystem next, int? id) NextWaypoint()
+        public (Model.System next, int? id) NextWaypoint()
 		{
-            if (NeutronPlotterRoute == null)
+            if (Route == null)
             {
                 return (null, null);
             }
-			if (NeutronPlotterRoute.TotalJumps > 0 && _currentWaypoint + 1 < NeutronPlotterRoute.SystemJumps.Count)
+			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemsInRoute.Length)
 			{
-				var next = NeutronPlotterRoute.SystemJumps[++_currentWaypoint];
+				var next = Route.SystemsInRoute[++_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public (NeutronPlotterSystem previous, int? id) PreviousWaypoint()
+		public (Model.System previous, int? id) PreviousWaypoint()
 		{
-            if (NeutronPlotterRoute == null)
+            if (Route == null)
             {
                 return (null, null);
             }
-			if (NeutronPlotterRoute.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
+			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
-				var next = NeutronPlotterRoute.SystemJumps[--_currentWaypoint];
+				var next = Route.SystemsInRoute[--_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public NeutronPlotterSystem CurrentWaypoint
+		public Model.System CurrentWaypoint
 		{
 			get => _currentWaypoint1;
 			private set
