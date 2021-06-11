@@ -1,6 +1,6 @@
 ﻿namespace libspanch
 {
-    public class SystemJump
+    public class NeutronPlotterSystem
     {
         public string System { get; set; }
         public bool NeutronStar { get; set; }

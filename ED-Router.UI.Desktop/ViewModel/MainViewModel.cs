@@ -221,7 +221,7 @@ namespace ED_Router.UI.Desktop.ViewModel
             {
                 return;
             }
-			Clipboard.SetText(Router.CurrentWaypoint.System);
+			Clipboard.SetText(Router.CurrentWaypoint.Name);
 		}
 	}
 }

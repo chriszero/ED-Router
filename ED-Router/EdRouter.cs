@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ED_Router.Events;
+using ED_Router.Extensions;
+using ED_Router.Model;
 using ED_Router.Services;
 using libspanch;
 using Newtonsoft.Json.Linq;
@@ -60,7 +62,7 @@ namespace ED_Router
 		{
             CurrentSystem = obj;
 
-            if (CurrentWaypoint == null || Route == null || Route.SystemJumps.Count == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.System, obj, StringComparison.InvariantCultureIgnoreCase))
+            if (CurrentWaypoint == null || Route == null || Route.SystemsInRoute.Length == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.Name, obj, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
@@ -83,16 +85,16 @@ namespace ED_Router
 		private string _destination;
 		private double _range;
 		private int _efficiency;
-		private Route _route;
-		private SystemJump _currentWaypoint1;
+		private FlightPlan _route;
+		private Model.System _currentWaypoint1;
 
         public int CurrentWaypointIndex => _currentWaypoint;
 
-        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemJumps.Count)*100, 2);
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemsInRoute.Length)*100, 2);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-		public Route Route
+		public FlightPlan Route
 		{
 			get => _route;
 			set
@@ -358,35 +360,35 @@ namespace ED_Router
             }
 		}
 
-        private void HandleRouteResponse(Route route)
+        private void HandleRouteResponse(NeutronPlotterRoute neutronPlotterRoute)
         {
-            if (route.TotalJumps <= 0)
+            if (neutronPlotterRoute.TotalJumps <= 0)
             {
                 return;
             }
 
-            Route = route;
+            Route = neutronPlotterRoute.ToFlightPlan();
             _currentWaypoint = 0;
-            CurrentWaypoint = Route.SystemJumps.ElementAt(0);
-            SpanshUri = route.Uri;
-            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(route));
+            CurrentWaypoint = Route.SystemsInRoute[0];
+            SpanshUri = Route.Uri;
+            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(Route));
         }
 
-        public (SystemJump next, int? id) NextWaypoint()
+        public (Model.System next, int? id) NextWaypoint()
 		{
             if (Route == null)
             {
                 return (null, null);
             }
-			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemJumps.Count)
+			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemsInRoute.Length)
 			{
-				var next = Route.SystemJumps[++_currentWaypoint];
+				var next = Route.SystemsInRoute[++_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public (SystemJump previous, int? id) PreviousWaypoint()
+		public (Model.System previous, int? id) PreviousWaypoint()
 		{
             if (Route == null)
             {
@@ -394,13 +396,13 @@ namespace ED_Router
             }
 			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
-				var next = Route.SystemJumps[--_currentWaypoint];
+				var next = Route.SystemsInRoute[--_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public SystemJump CurrentWaypoint
+		public Model.System CurrentWaypoint
 		{
 			get => _currentWaypoint1;
 			private set

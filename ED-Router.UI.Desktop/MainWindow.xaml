@@ -142,7 +142,7 @@
                   HorizontalAlignment="Stretch" 
                   Margin="10" 
                   VerticalAlignment="Stretch" 
-                  ItemsSource="{Binding Router.Route.SystemJumps}"
+                  ItemsSource="{Binding Router.Route.SystemsInRoute}"
                   IsReadOnly="True" 
                   SelectionMode="Single"
                   CanUserSortColumns="False" 

@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace libspanch
+﻿namespace ED_Router.Model
 {
-    public class Route
+    public class FlightPlan
     {
-        public List<SystemJump> SystemJumps { get; set; }
+        public string SpanchId { get; set; }
+        public string Name { get; set; }
+
+        public PlanType PlanType { get; set; }
+
+        public System[] SystemsInRoute { get; set; }
+
         public string DestinationSystem { get; set; }
         public double Distance { get; set; }
         public int Efficiency { get; set; }
         public double Range { get; set; }
         public string SourceSystem { get; set; }
         public int TotalJumps { get; set; }
-        public string Id { get; set; }
-        
+
         public string Uri
         {
             get
@@ -23,7 +25,7 @@ namespace libspanch
                     return null;
                 }
 
-                return $"https://spansh.co.uk/plotter/results/{Id}?efficiency={Efficiency}&from={SourceSystem}&range={Range}&to={DestinationSystem}";
+                return $"https://spansh.co.uk/plotter/results/{SpanchId}?efficiency={Efficiency}&from={SourceSystem}&range={Range}&to={DestinationSystem}";
             }
         }
     }
