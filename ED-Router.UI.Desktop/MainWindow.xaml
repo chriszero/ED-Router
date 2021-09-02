@@ -14,6 +14,22 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:VisibleAndMultiConverter x:Key="MultiVisibilityConverter"/>
         <converters:AnyToBoolConverter x:Key="AnyToBoolConverter"/>
+        <Style TargetType="{x:Type DataGridRow}">
+           <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="DimGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="DimGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <ViewModel:MainViewModel/>
@@ -140,7 +156,7 @@
             <DataGrid Grid.Row="2"
                   Grid.Column="1" 
                   HorizontalAlignment="Stretch" 
-                  Margin="10" 
+                  Margin="10"
                   VerticalAlignment="Stretch" 
                   ItemsSource="{Binding Router.Route.SystemsInRoute}"
                   IsReadOnly="True" 
