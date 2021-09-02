@@ -229,7 +229,7 @@ namespace ED_Router.VoiceAttack
                         return;
                     }
 
-                    Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.System);
+                    Clipboard.SetText(EdRouter.Instance.CurrentWaypoint.Name);
                 }
                 catch
                 {
