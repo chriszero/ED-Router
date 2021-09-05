@@ -7,8 +7,8 @@ BETA version! You might have bugs.
 
 ## Installing ED-Router
 
-https://github.com/dominiquesavoie/ED-Router/releases/download/0.0.10/ED-Router.0.0.10.zip (Latest version)
-https://github.com/dominiquesavoie/ED-Router/releases/download/0.0.10/ed-router.vap (latest profile sample)
+https://github.com/dominiquesavoie/ED-Router/releases/download/0.1.0/ED-Router.0.1.0.zip (Latest version)
+https://github.com/dominiquesavoie/ED-Router/releases/download/0.1.0/ed-router.vap (latest profile sample)
 
 
 If used as stand alone, just save it on your desktop and start.
