@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Windows.Input;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,6 +82,7 @@ namespace ED_Router.UI.Desktop.ViewModel
             }
         }
 
+
         private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
             if (e.PropertyName == nameof(Router.Start) && !(Router.Start ?? string.Empty).Equals(_fromSearch, StringComparison.InvariantCultureIgnoreCase))
@@ -90,6 +92,10 @@ namespace ED_Router.UI.Desktop.ViewModel
             else if (e.PropertyName == nameof(Router.Destination) && !(Router.Destination ?? string.Empty).Equals(_toSearch, StringComparison.InvariantCultureIgnoreCase))
             {
                 ToSearch = Router.Destination;
+            }
+            else if(e.PropertyName == nameof(Router.FlightPlan))
+            {
+                RaisePropertyChanged(nameof(ShowRefuel));
             }
 
             RaisePropertyChanged();
@@ -107,9 +113,13 @@ namespace ED_Router.UI.Desktop.ViewModel
 
 		public EdRouter Router { get; private set; }
         
+        public Visibility ShowRefuel => (Router?.FlightPlan?.RefuelDataAvailable ?? false)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
         public ObservableCollection<string> From { get; private set; }
         public ObservableCollection<string> To { get; private set; }
-
+        
 		private string _fromSearch;
         public string FromSearch
 		{

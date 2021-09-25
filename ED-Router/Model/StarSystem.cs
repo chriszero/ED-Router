@@ -1,4 +1,6 @@
-﻿namespace ED_Router.Model
+﻿using System.ComponentModel;
+
+namespace ED_Router.Model
 {
     public class StarSystem
     {
@@ -6,6 +8,7 @@
         public string Name { get; set; }
         public bool HasNeutronStar { get; set; }
         public int? Jumps { get; set; }
+        
         public double? FuelLeft{ get; set; }
         public double? FuelUsed { get; set; }
         public bool? Refuel { get; set; }

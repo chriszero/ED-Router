@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:ED_Router.UI.Desktop.Converters"
         x:Class="ED_Router.UI.Desktop.MainWindow"
         mc:Ignorable="d"
-        Title="ED-Router 0.1.0" MinHeight="485" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
+        Title="ED-Router 0.2.0" MinHeight="485" MinWidth="857" Height="438" Width="857" UseLayoutRounding="False">
     <Window.Resources>
         <converters:BoolInverterConverter x:Key="BoolInverterConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -44,10 +44,16 @@
     </Window.InputBindings>
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-        <Menu Visibility="Collapsed">
+        <Menu Visibility="Visible">
             <MenuItem Header="_File">
-                <MenuItem Header="_Import" ToolTip="Imports the result of a plot made on SpanchAPI"/>
-                <MenuItem Header="_Close" />
+                <MenuItem Header="_Import CSV" 
+                          Command="{Binding ImportCSVCommand}"
+                          ToolTip="Imports the result of a plot made on SpanchAPI"/>
+                <Separator/>
+                <MenuItem Header="_Open On Spansh" 
+                          Command="{Binding OpenOnSpansh}"
+                          IsEnabled="{Binding Router.SpanshUri, Converter={StaticResource AnyToBoolConverter}, Mode=OneWay}"
+                          ToolTip="Opens this on Spansh (Not availabe if imported via CSV)"/>
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Command="ApplicationCommands.Cut"/>
@@ -69,6 +75,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical"
+                        Margin="0,5,0,0"
                     Grid.ColumnSpan="2"
                     Grid.Column="0"
                     Grid.Row="0">
@@ -160,11 +167,14 @@
                   VerticalAlignment="Stretch" 
                   ItemsSource="{Binding Router.FlightPlan.SystemsInRoute}"
                   IsReadOnly="True" 
+                  AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn"
                   SelectionMode="Single"
                   CanUserSortColumns="False" 
                   IsEnabled="{Binding Router.IsBusy, Converter={StaticResource BoolInverterConverter}}"
                   SelectedItem="{Binding Router.CurrentWaypoint, Mode=OneWay}"
-                  RowDetailsVisibilityMode="Visible"/>
+                  RowDetailsVisibilityMode="Visible">
+            </DataGrid>
+            
             <Label Grid.Row="2"
                Grid.Column="0"
                Content="To" 
@@ -243,16 +253,6 @@
                   Text="{Binding ToSearch}" 
                   IsSynchronizedWithCurrentItem="False" />
 
-            <Button Grid.Column="0"
-                Grid.Row="2"
-                Margin="10,177,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Width="177"
-                Content="Open on Spansh"
-                IsEnabled="{Binding Router.SpanshUri, Converter={StaticResource AnyToBoolConverter}, Mode=OneWay}"
-                Command="{Binding OpenOnSpansh}"/>
-
             <Button Grid.Row="2"
                 Grid.Column="0"
                 Content="Next Waypoint"
@@ -302,8 +302,6 @@
                 <Label Content="Enable auto waypoint"/>
                 <CheckBox IsChecked="{Binding Router.EnableAutoWaypoint}"
                       VerticalAlignment="Center"/>
-                <Button Command="{Binding ImportCSVCommand}"
-                        Content="ImportCSV"/>
             </StackPanel>
 
         </Grid>

@@ -33,5 +33,7 @@
                 return $"https://spansh.co.uk/plotter/results/{SpanchId}?efficiency={Efficiency}&from={SourceSystem}&range={Range}&to={DestinationSystem}";
             }
         }
+
+        public bool RefuelDataAvailable => PlanType == PlanType.GalaxyPlotterAPI || PlanType == PlanType.GalaxyPlotterCSV;
     }
 }
