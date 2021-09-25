@@ -7,7 +7,7 @@
 
         public PlanType PlanType { get; set; }
 
-        public System[] SystemsInRoute { get; set; }
+        public StarSystem[] SystemsInRoute { get; set; }
 
         public string DestinationSystem { get; set; }
         public double Distance { get; set; }
@@ -20,6 +20,11 @@
         {
             get
             {
+                if (PlanType < PlanType.NeutronPlotterAPI || PlanType > PlanType.GalaxyPlotterAPI)
+                {
+                    return null;
+                }
+
                 if (string.IsNullOrEmpty(SourceSystem) || string.IsNullOrEmpty(DestinationSystem))
                 {
                     return null;

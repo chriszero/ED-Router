@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ED_Router.Services;
+using Newtonsoft.Json.Linq;
 
 namespace ED_Router
 {
@@ -66,11 +66,9 @@ namespace ED_Router
 			{
 				return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
 			}
-			else
-			{
-				throw new ExternalException("Failed to find the saved games directory.", result);
-			}
-		}
+
+            throw new ExternalException("Failed to find the saved games directory.", result);
+        }
 
 		internal class NativeMethods
 		{

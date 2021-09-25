@@ -53,11 +53,13 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Model\FlightPlan.cs" />
     <Compile Include="Model\PlanType.cs" />
-    <Compile Include="Model\System.cs" />
+    <Compile Include="Model\StarSystem.cs" />
+    <Compile Include="Services\ICsvManager.cs" />
     <Compile Include="Services\IDispatcherAccessor.cs" />
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Impl\CsvManager.cs" />
     <Compile Include="Services\IVoiceAttackAccessor.cs" />
     <Compile Include="Services\MessageColor.cs" />
   </ItemGroup>
@@ -70,5 +72,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ED_Router.Extensions;
-using libspanch;
+using ED_Router.Model;
 
 namespace ED_Router.Events
 {
@@ -12,8 +12,6 @@ namespace ED_Router.Events
         public IList<VoiceAttackVariable> EventArgs { get; } = new List<VoiceAttackVariable>();
 
         public abstract string EventName { get; }
-
-        protected RouterEventArgs(){}
     }
 
     public class VoiceAttackVariable
@@ -43,7 +41,7 @@ namespace ED_Router.Events
 
     public class Calculate_Route : RouterEventArgs<Calculate_Route>
     {
-        public static Calculate_Route Create(Model.FlightPlan flightPlan)
+        public static Calculate_Route Create(FlightPlan flightPlan)
         {
             var @event = new Calculate_Route();
 
@@ -59,7 +57,11 @@ namespace ED_Router.Events
             }
             @event.EventArgs.Add(VoiceAttackVariable.Create("travel_percent", (decimal)0));
             @event.EventArgs.Add(VoiceAttackVariable.Create("jump_number", 1));
-            @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", flightPlan.Uri));
+
+            if (flightPlan.PlanType == PlanType.NeutronPlotterAPI || flightPlan.PlanType == PlanType.GalaxyPlotterAPI)
+            {
+                @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", flightPlan.Uri));
+            }
 
             return @event;
         }
@@ -74,9 +76,9 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Next_Waypoint Create(Model.System currentWaypoint, int jumpIndex, double travelPercent,bool copyToClipboard = false, bool emitEvent = false)
+        public static Next_Waypoint Create(StarSystem currentWaypoint, int jumpIndex, double travelPercent,bool copyToClipboard = false, bool emitEvent = false)
         {
-            var @event = new Next_Waypoint()
+            var @event = new Next_Waypoint
             {
                 CopyToClipboard = copyToClipboard,
                 EmitEvent = emitEvent
@@ -97,9 +99,9 @@ namespace ED_Router.Events
     {
         public bool CopyToClipboard { get; private set; }
         
-        public static Previous_Waypoint Create(Model.System currentWaypoint, int jumpIndex, double travelPercent, bool copyToClipboard = false, bool emitEvent = false)
+        public static Previous_Waypoint Create(StarSystem currentWaypoint, int jumpIndex, double travelPercent, bool copyToClipboard = false, bool emitEvent = false)
         {
-            var @event = new Previous_Waypoint()
+            var @event = new Previous_Waypoint
             {
                 CopyToClipboard = copyToClipboard,
                 EmitEvent = emitEvent

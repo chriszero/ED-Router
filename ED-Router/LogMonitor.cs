@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ED_Router
 		// What we are monitoring and what to do with it
 		public string Directory;
 		public Regex Filter;
-		public static string journalFileName = null;
+		public static string journalFileName;
 
 		// Keep track of status
 		private bool running;
@@ -28,7 +29,7 @@ namespace ED_Router
 		public abstract void EventCallback(string data);
 
 		/// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
+		[SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
 		public void Start()
 		{
 			if (Directory == null || Directory.Trim() == "")

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +9,7 @@ using ED_Router.Events;
 using ED_Router.Extensions;
 using ED_Router.Model;
 using ED_Router.Services;
+using ED_Router.Services.Impl;
 using libspanch;
 using Newtonsoft.Json.Linq;
 
@@ -17,7 +17,7 @@ namespace ED_Router
 {
 	public class EdRouter : INotifyPropertyChanged, IDisposable
     {
-        private bool _isBusy = false;
+        private bool _isBusy;
         public bool IsBusy
         {
             get => _isBusy;
@@ -28,6 +28,7 @@ namespace ED_Router
 			}
         }
 
+        public ICsvManager CsvManager { get; protected set; }
         public IDispatcherAccessor Dispatcher { get; protected set; }
 		public IVoiceAttackAccessor VoiceAttackAccessor { get; protected set; }
         public static EdRouter Instance { get; } = new EdRouter();
@@ -39,6 +40,7 @@ namespace ED_Router
             _initialization = true;
             Instance.Dispatcher = dispatcherAccessor;
             Instance.VoiceAttackAccessor = voiceAttackAccessor;
+            Instance.CsvManager = new CsvManager();
         }
 
 		private static string settingsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ed-router\\settings.json");
@@ -62,12 +64,12 @@ namespace ED_Router
 		{
             CurrentSystem = obj;
 
-            if (CurrentWaypoint == null || Route == null || Route.SystemsInRoute.Length == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.Name, obj, StringComparison.InvariantCultureIgnoreCase))
+            if (CurrentWaypoint == null || FlightPlan == null || FlightPlan.SystemsInRoute.Length == 0 || !EnableAutoWaypoint || !string.Equals(CurrentWaypoint?.Name, obj, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            if (string.Equals(Route?.DestinationSystem, obj))
+            if (string.Equals(FlightPlan?.DestinationSystem, obj))
             {
 				EnableAutoWaypoint = false;
                 VoiceAttackAccessor.SendEvent(Final_Waypoint.Create());
@@ -85,21 +87,21 @@ namespace ED_Router
 		private string _destination;
 		private double _range;
 		private int _efficiency;
-		private FlightPlan _route;
-		private Model.System _currentWaypoint1;
+		private FlightPlan _flightPlan;
+		private StarSystem _currentWaypoint1;
 
         public int CurrentWaypointIndex => _currentWaypoint;
 
-        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / Route.SystemsInRoute.Length)*100, 2);
+        public double RouteTraveledPercent => Math.Round(((_currentWaypoint * 1d) / FlightPlan.SystemsInRoute.Length)*100, 2);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-		public FlightPlan Route
+		public FlightPlan FlightPlan
 		{
-			get => _route;
-			set
+			get => _flightPlan;
+			private set
 			{
-				_route = value;
+				_flightPlan = value;
 				OnPropertyChanged();
 			}
 		}
@@ -366,43 +368,47 @@ namespace ED_Router
             {
                 return;
             }
-
-            Route = neutronPlotterRoute.ToFlightPlan();
-            _currentWaypoint = 0;
-            CurrentWaypoint = Route.SystemsInRoute[0];
-            SpanshUri = Route.Uri;
-            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(Route));
+            SetNewFlightPlan(neutronPlotterRoute.ToFlightPlan());
         }
 
-        public (Model.System next, int? id) NextWaypoint()
+        public void SetNewFlightPlan(FlightPlan fligthPlan)
+        {
+            FlightPlan = fligthPlan;
+            _currentWaypoint = 0;
+            CurrentWaypoint = FlightPlan.SystemsInRoute[0];
+            SpanshUri = FlightPlan.Uri;
+            VoiceAttackAccessor.SendEvent(Calculate_Route.Create(FlightPlan));
+        }
+
+        public (StarSystem next, int? id) NextWaypoint()
 		{
-            if (Route == null)
+            if (FlightPlan == null)
             {
                 return (null, null);
             }
-			if (Route.TotalJumps > 0 && _currentWaypoint + 1 < Route.SystemsInRoute.Length)
+			if (FlightPlan.TotalJumps > 0 && _currentWaypoint + 1 < FlightPlan.SystemsInRoute.Length)
 			{
-				var next = Route.SystemsInRoute[++_currentWaypoint];
+				var next = FlightPlan.SystemsInRoute[++_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public (Model.System previous, int? id) PreviousWaypoint()
+		public (StarSystem previous, int? id) PreviousWaypoint()
 		{
-            if (Route == null)
+            if (FlightPlan == null)
             {
                 return (null, null);
             }
-			if (Route.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
+			if (FlightPlan.TotalJumps > 0 && _currentWaypoint - 1 >= 0)
 			{
-				var next = Route.SystemsInRoute[--_currentWaypoint];
+				var next = FlightPlan.SystemsInRoute[--_currentWaypoint];
 				CurrentWaypoint = next;
 			}
 			return (CurrentWaypoint, _currentWaypoint);
 		}
 
-		public Model.System CurrentWaypoint
+		public StarSystem CurrentWaypoint
 		{
 			get => _currentWaypoint1;
 			private set

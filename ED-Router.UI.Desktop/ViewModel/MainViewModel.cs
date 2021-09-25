@@ -12,6 +12,7 @@ using ED_Router.Events;
 using ED_Router.Extensions;
 using ED_Router.Services;
 using ED_Router.UI.Desktop.Helper;
+using Microsoft.Win32;
 
 namespace ED_Router.UI.Desktop.ViewModel
 {
@@ -23,7 +24,7 @@ namespace ED_Router.UI.Desktop.ViewModel
 			NextWaypointCommand = new RelayCommand(NextWaypointMethod);
 			PrevWaypointCommand = new RelayCommand(PrevWaypointMethod);
 			CopyToClipboardCommand = new RelayCommand(WaypointToClipboard);
-
+            ImportCSVCommand = new RelayCommand(ImportCSV);
             OpenOnSpansh = new RelayCommand(OpenOnSpanshWebsite);
 
 			Router = EdRouter.Instance;
@@ -41,6 +42,43 @@ namespace ED_Router.UI.Desktop.ViewModel
             }
 
             ProcessHelper.ExecuteProcessUnElevated(Router.SpanshUri,"");
+        }
+
+        private async void ImportCSV()
+        {
+            var fileDialog = new OpenFileDialog()
+            {
+                DefaultExt = ".csv",
+                Filter = "Comma separated value (*.csv)|*.csv",
+                Multiselect = false,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                
+            };
+
+            var result = fileDialog.ShowDialog();
+
+            if ((result ?? false) == false)
+            {
+                return;
+            }
+
+            try
+            {
+                var flightPlan = await Task.Run(async () =>
+                {
+                    Task.Yield();
+                    return await Router.CsvManager
+                        .ImportCsv(fileDialog.FileName)
+                        .ConfigureAwait(continueOnCapturedContext: false);
+                });
+
+                Router.SetNewFlightPlan(flightPlan);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("A problem occurred while trying to read the Csv file.", "An error occurred", MessageBoxButton.OK);
+            }
         }
 
         private void Router_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -61,6 +99,8 @@ namespace ED_Router.UI.Desktop.ViewModel
 		public ICommand NextWaypointCommand { get; private set; }
 		public ICommand PrevWaypointCommand { get; private set; }
 		public ICommand CopyToClipboardCommand { get; private set; }
+
+        public ICommand ImportCSVCommand { get; }
 
 		public ICommand OpenOnSpansh { get; private set; }
 

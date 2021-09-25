@@ -15,7 +15,7 @@ namespace ED_Router.Extensions
                 Efficiency = neutronPlotter.Efficiency,
                 Name = $"{neutronPlotter.SourceSystem} to {neutronPlotter.DestinationSystem}",
                 SourceSystem = neutronPlotter.SourceSystem,
-                PlanType = PlanType.NeutronPlotter,
+                PlanType = PlanType.NeutronPlotterAPI,
                 Range = neutronPlotter.Range,
                 SpanchId = neutronPlotter.Id,
                 TotalJumps = neutronPlotter.TotalJumps,
@@ -23,11 +23,11 @@ namespace ED_Router.Extensions
             };
         }
 
-        private static Model.System ToSystemModel(NeutronPlotterSystem neutronPlotterSystem, int index)
+        private static StarSystem ToSystemModel(NeutronPlotterSystem neutronPlotterSystem, int index)
         {
-            return new Model.System()
+            return new StarSystem
             {
-                DistanceJumped = neutronPlotterSystem.DistanceJumped,
+                DistanceToStar = neutronPlotterSystem.DistanceJumped,
                 DistanceLeft = neutronPlotterSystem.DistanceLeft,
                 HasNeutronStar = neutronPlotterSystem.NeutronStar,
                 Jumps = neutronPlotterSystem.Jumps,

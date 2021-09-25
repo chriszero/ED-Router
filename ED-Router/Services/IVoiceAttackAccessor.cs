@@ -1,5 +1,4 @@
-﻿using System;
-using ED_Router.Events;
+﻿using ED_Router.Events;
 
 namespace ED_Router.Services
 {
