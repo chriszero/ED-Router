@@ -30,11 +30,15 @@ If used as VoiceAttack plugin, copy the files to your VoiceAttack Apps folder ([
 * {INT:EDRouter_jump_number} : Rank in the sequence of waypoints. This number will increase or decrease as you change the currently selected waypoint.
 * {DEC:EDRouter_travel_percent } : % of waypoints that where reached since the start of the route.
 
-Note: The following values are provided by Spansh, your real disatance traveled or number of jumps to do might be different in reality.
+Note: The following values are provided by Spansh or by the csv file, your real distance traveled or number of jumps to do might be different in reality.
 * {DEC:EDRouter_distance_left} : At the next waypoint, you will have this distance left to do (in Ly). Set when calculate_route or next/prev waypoint
 * {DEC:EDRouter_distance_jumped} : At the next waypoint, you will have jumped this distance. Set when calculate_route or next/prev waypoint
-* {INT:EdRouter_nb_jumps} : Number of jumps until you reach the next waypoint. Set when calculate_route or next/prev waypoint completes
-* {TXT:EDRouter_current_waypoint} : the URL to open the route on the Spansh website for the currently calculated route. 
+* {TXT:EDRouter_spansh_uri} : the URL to open the route on the Spansh website for the currently calculated route. (Will 'NOT SET' if a csv file is loaded)
+* {BOOL:EDRouter_has_neutron} : Indicates that the next waypoint has a neutron close to the arrival.
+* {BOOL:EDRouter_refuel} : Indicates that the next waypoint has a scoopable star nearby.
+* {INT:EDRouter_nb_jumps} : Number of jumps until you reach the next waypoint. Set when calculate_route or next/prev waypoint completes.
+
+Note: refuel and nb_jumps might not be set if the data is unavailable.
 
 ## VoiceAttack Events
 
