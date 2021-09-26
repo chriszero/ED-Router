@@ -84,13 +84,17 @@ namespace ED_Router.VoiceAttack
         {
             if(value == null) return;
 
-            if (variableType == typeof(int))
+            if (variableType == typeof(int) || variableType == typeof(int?))
             {
-                vaProxy.SetInt($"EDRouter_{variableName}", (int)value);
+                vaProxy.SetInt($"EDRouter_{variableName}", Convert.ToInt32(value));
             }
-            else if(variableType == typeof(decimal))
+            else if(variableType == typeof(decimal) || variableType == typeof(decimal?))
             {
-                vaProxy.SetDecimal($"EDRouter_{variableName}", (decimal)value);
+                vaProxy.SetDecimal($"EDRouter_{variableName}", Convert.ToDecimal(value));
+            }
+            else if (variableType == typeof(bool) || variableType == typeof(bool?))
+            {
+                vaProxy.SetBoolean($"EDRouter_{variableName}", Convert.ToBoolean(value));
             }
             else
             {
