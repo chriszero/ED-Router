@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<Profile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Profile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <HasMB>false</HasMB>
-  <Id>bba0a0de-82a9-4367-b7a3-1783c32f9aa0</Id>
+  <Id>e7661480-fdca-40cd-889e-bb47d04f1460</Id>
   <Name>EDRouter - Sample</Name>
   <Commands>
     <Command>
@@ -25,7 +25,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>9c938860-5fb4-4ed7-b53e-5094deb5fcfe</Id>
+      <Id>ec0de740-269f-4d67-8592-a3accb67561f</Id>
       <CommandString>next waypoint</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -37,7 +37,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>13bb1e87-1cc2-461a-abc9-b43da2a845b3</Id>
+          <Id>e5aecf63-e4f8-4a7e-934f-cab8f31a2375</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -76,7 +76,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>d83e2fb9-bc45-4be7-b82a-f8f49305c125</Id>
+          <Id>18156b08-368d-47d0-aadf-93df1a0964fe</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -108,7 +108,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>97a94bcf-d17c-416b-99ac-a292e9b0d6fe</Id>
+          <Id>4100f52a-50b1-4b1c-bc70-fbb19c527e76</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -140,7 +140,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>24b7541a-2553-4ccd-aae9-86351ce8f2b7</Id>
+          <Id>b11697e1-0415-4348-91d6-f55288e201aa</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -172,7 +172,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>40428365-d810-43e1-9129-f3a9de6d6947</Id>
+          <Id>05e8cfd2-523c-4f16-9d3a-faaa5727d6be</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -204,7 +204,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>29635e30-beed-4354-904d-4155c9181f8b</Id>
+          <Id>8fb81112-a620-4625-beff-ae441cb1344b</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -236,7 +236,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>4716509b-ee61-4980-8065-20794abbf1ec</Id>
+          <Id>ba6bb304-a5ce-4cde-a897-326d27e3fed5</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -268,7 +268,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>51f4d5a9-1d2c-4f46-a5bc-8d8bc8ab424e</Id>
+          <Id>62a2ffb3-04dc-40da-825e-7e054e3cdaf9</Id>
           <ActionType>Pause</ActionType>
           <Duration>1</Duration>
           <Delay>0</Delay>
@@ -299,7 +299,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>247253a6-acfe-4dba-9f51-58ff4ec83253</Id>
+          <Id>4f131daa-89c6-45fe-99c3-8dd2e9ffb695</Id>
           <ActionType>PressKey</ActionType>
           <Duration>0.1</Duration>
           <Delay>0</Delay>
@@ -415,7 +415,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>4103846b-5be3-4482-a1d8-56c85f6834ff</Id>
+      <Id>fa654833-12d2-41a7-8cb6-b1eca17dae6e</Id>
       <CommandString>configure navigation</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -427,7 +427,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>e9530c8d-d70c-4074-a556-9bb34ce7870e</Id>
+          <Id>e7297bf9-8a89-48e0-98d3-12e8856374cf</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -547,7 +547,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>eefdd385-2423-497f-bea7-d708f2f85c4b</Id>
+      <Id>4a123bf7-b20a-48d2-ad74-698168eedefb</Id>
       <CommandString>Calculate Route</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -559,7 +559,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>49b3a2f2-4e0f-4979-952b-f44945138461</Id>
+          <Id>939073ef-a0da-46ba-b121-5af9b118bbbb</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -679,7 +679,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>62df1e4a-edfe-4ccb-90f7-77fc3e882349</Id>
+      <Id>eb7abcf2-d5c0-4e3d-b619-ff9563ba1e00</Id>
       <CommandString>((EDRouter calculate_route))</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -691,7 +691,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>be51aeb9-3d7d-4853-9003-2f0e449c020c</Id>
+          <Id>1a6799ce-6dbc-4908-9c66-ad4be12e969b</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -723,7 +723,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>3837dad9-caf1-4b84-ab61-0e2264d6ad3f</Id>
+          <Id>03535b2c-b0c0-42ba-8aa0-26a3e199567d</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -755,7 +755,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>df1ac0f1-e630-4285-9996-a4dbce3eaad0</Id>
+          <Id>39d890f3-0923-421c-8d8d-9b95099dca55</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -787,7 +787,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>ff6388aa-43f2-45ce-9352-d0c8c1ca910a</Id>
+          <Id>55b03c86-6f71-4bb1-a502-3456a1a6dc56</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -819,7 +819,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>7fca37b5-fe17-41bd-948d-c47ec419d99c</Id>
+          <Id>1e7fc846-71c7-4882-b02a-b41daec11335</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -851,7 +851,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>430287fd-a669-499b-b6b2-ff1d6ec75852</Id>
+          <Id>736a8885-b3a1-4d91-949a-31259365182d</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -964,10 +964,11 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>4a0b9d6d-50d0-4b56-85c5-24bc2912ea1c</Id>
+      <Id>e5dde5a9-29ff-401c-a31d-1c0d4b3a5f58</Id>
       <CommandString>((EDRouter next_waypoint))</CommandString>
       <ActionSequence>
         <CommandAction>
+          <_caption>Write [Blue] 'EDRouter Next Waypoint Set' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
           <Ordinal>0</Ordinal>
@@ -976,7 +977,8 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>8d85230b-465d-423d-bd4c-f33269b1bb96</Id>
+          <Caption>Write [Blue] 'EDRouter Next Waypoint Set' to log</Caption>
+          <Id>64500a9d-df03-4f89-8ce2-de093fce536f</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1000,15 +1002,17 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Write [Blue] 'Total number of jumps: {INT:EDRouter_total_jumps}' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>1</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>9f7718fe-309a-416c-9642-436c0b26dc23</Id>
+          <Caption>Write [Blue] 'Total number of jumps: {INT:EDRouter_total_jumps}' to log</Caption>
+          <Id>b14e5018-0eb4-444d-8954-26d419a9ab41</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1032,15 +1036,17 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Write [Blue] 'Next waypoint: {TXT:EDRouter_current_waypoint}' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>2</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>5bb8441d-ad33-4300-b02d-fe3f923e65e4</Id>
+          <Caption>Write [Blue] 'Next waypoint: {TXT:EDRouter_current_waypoint}' to log</Caption>
+          <Id>33be15b8-6d5d-4cfc-873a-2f5dfb654eee</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1064,15 +1070,17 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Write [Blue] 'Distance remaining: {DEC:EDRouter_distance_left}' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>3</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>80ca8f47-f3e4-4256-bc2b-a51aac9075ed</Id>
+          <Caption>Write [Blue] 'Distance remaining: {DEC:EDRouter_distance_left}' to log</Caption>
+          <Id>cb2b84ff-46c2-4650-beb0-e25beea16c18</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1096,15 +1104,17 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Write [Blue] 'Distance jumped: {DEC:EDRouter_distance_jumped}' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>4</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>4eb87e5f-7dd9-48e4-ae56-18e6c94d02d0</Id>
+          <Caption>Write [Blue] 'Distance jumped: {DEC:EDRouter_distance_jumped}' to log</Caption>
+          <Id>f2023dda-e638-4a3f-81ec-3ca6f958aa0e</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1128,15 +1138,17 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Write [Blue] 'Nb of normal jumps to next waypoint: {INT:EDRouter_nb_jumps}' to log</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>5</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>cf36184b-0892-4fe2-aaf4-b19d001f6932</Id>
+          <Caption>Write [Blue] 'Nb of normal jumps to next waypoint: {INT:EDRouter_nb_jumps}' to log</Caption>
+          <Id>102d8bd4-714b-4d08-b57c-b13f937c9e3e</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1160,15 +1172,53 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>Begin Integer Compare : [EDRouter_jump_number] Has Been Set</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>6</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>4a71d18e-0138-4a7a-9b75-2e6a9d20441f</Id>
+          <Caption>Begin Integer Compare : [EDRouter_jump_number] Has Been Set</Caption>
+          <Id>6e09e124-d099-431b-a6a5-16c1f2c28066</Id>
+          <ActionType>ConditionStart</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <Context2 xml:space="preserve">True</Context2>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>8</ConditionPairing>
+          <ConditionGroup>1</ConditionGroup>
+          <ConditionStartNameFrom>EDRouter_jump_number</ConditionStartNameFrom>
+          <ConditionStartOperator>6</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartCompareToCondtion />
+          <ConditionStartType>3</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>    Write [Blue] 'Next Waypoint Number: {INT:EDRouter_jump_number}' to log</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>7</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>1</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>    Write [Blue] 'Next Waypoint Number: {INT:EDRouter_jump_number}' to log</Caption>
+          <Id>9096b3b3-7093-4ae9-a0bd-cb29a7ddbfbd</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1192,15 +1242,50 @@
           <RandomSounds />
         </CommandAction>
         <CommandAction>
+          <_caption>End Condition</_caption>
           <PairingSet>false</PairingSet>
           <PairingSetElse>false</PairingSetElse>
-          <Ordinal>0</Ordinal>
+          <Ordinal>8</Ordinal>
           <ConditionMet xsi:nil="true" />
           <IndentLevel>0</IndentLevel>
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>fbd1f16e-5bd2-4094-ae2e-f466aa0c8390</Id>
+          <Caption>End Condition</Caption>
+          <Id>f3d1a2a3-771e-482d-8774-1b2da48006a6</Id>
+          <ActionType>ConditionEnd</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>6</ConditionPairing>
+          <ConditionGroup>1</ConditionGroup>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartType>0</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>Write [Blue] 'Travel Distance (Percent): {DEC:EDRouter_travel_percent}' to log</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>9</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>0</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>Write [Blue] 'Travel Distance (Percent): {DEC:EDRouter_travel_percent}' to log</Caption>
+          <Id>cdf3b6fe-96fc-4fad-9c69-dc6e0e6583ee</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1212,6 +1297,179 @@
           <InputMode>0</InputMode>
           <ConditionPairing>0</ConditionPairing>
           <ConditionGroup>0</ConditionGroup>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartType>0</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>Write [Blue] 'Refulable: {BOOL:EDRouter_refuel}' to log</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>10</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>0</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>Write [Blue] 'Refulable: {BOOL:EDRouter_refuel}' to log</Caption>
+          <Id>f0ceee15-f8d2-4fe6-80b2-96bde3f4512b</Id>
+          <ActionType>WriteToLog</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <Context>Refulable: {BOOL:EDRouter_refuel}</Context>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>0</ConditionPairing>
+          <ConditionGroup>0</ConditionGroup>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartType>0</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>Write [Blue] 'Has Neutron: {BOOL:EDRouter_has_neutron}' to log</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>11</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>0</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>Write [Blue] 'Has Neutron: {BOOL:EDRouter_has_neutron}' to log</Caption>
+          <Id>4357775c-a796-4014-97d4-4e002f01e0c4</Id>
+          <ActionType>WriteToLog</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <Context>Has Neutron: {BOOL:EDRouter_has_neutron}</Context>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>0</ConditionPairing>
+          <ConditionGroup>0</ConditionGroup>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartType>0</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>Begin Boolean Compare : [EDRouter_refuel] Equals True</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>12</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>0</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>Begin Boolean Compare : [EDRouter_refuel] Equals True</Caption>
+          <Id>1098bb0e-11ba-459b-bf7f-45974cd4ce1d</Id>
+          <ActionType>ConditionStart</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <Context2 xml:space="preserve">True</Context2>
+          <X>0</X>
+          <Y>0</Y>
+          <Z>1</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>14</ConditionPairing>
+          <ConditionGroup>2</ConditionGroup>
+          <ConditionStartNameFrom>EDRouter_refuel</ConditionStartNameFrom>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>1</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartCompareToCondtion />
+          <ConditionStartType>2</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>    Say, 'You should refuel at next waypoint'</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>13</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>1</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>    Say, 'You should refuel at next waypoint'</Caption>
+          <Id>23a91d1e-c9d6-434d-b3bb-be6bc47c20df</Id>
+          <ActionType>Say</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <Context>You should refuel at next waypoint</Context>
+          <Context3>00000000-0000-0000-0000-000000000000</Context3>
+          <Context4>Default</Context4>
+          <X>100</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>0</ConditionPairing>
+          <ConditionGroup>0</ConditionGroup>
+          <ConditionStartOperator>0</ConditionStartOperator>
+          <ConditionStartValue>0</ConditionStartValue>
+          <ConditionStartValueType>0</ConditionStartValueType>
+          <ConditionStartType>0</ConditionStartType>
+          <DecimalContext1>0</DecimalContext1>
+          <DecimalContext2>0</DecimalContext2>
+          <DateContext1>0001-01-01T00:00:00</DateContext1>
+          <DateContext2>0001-01-01T00:00:00</DateContext2>
+          <Disabled>false</Disabled>
+          <RandomSounds />
+        </CommandAction>
+        <CommandAction>
+          <_caption>End Condition</_caption>
+          <PairingSet>false</PairingSet>
+          <PairingSetElse>false</PairingSetElse>
+          <Ordinal>14</Ordinal>
+          <ConditionMet xsi:nil="true" />
+          <IndentLevel>0</IndentLevel>
+          <ConditionSkip>false</ConditionSkip>
+          <IsSuffixAction>false</IsSuffixAction>
+          <DecimalTransient1>0</DecimalTransient1>
+          <Caption>End Condition</Caption>
+          <Id>9add8db1-f37e-4492-8b19-211ea9c2959d</Id>
+          <ActionType>ConditionEnd</ActionType>
+          <Duration>0</Duration>
+          <Delay>0</Delay>
+          <KeyCodes />
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <InputMode>0</InputMode>
+          <ConditionPairing>12</ConditionPairing>
+          <ConditionGroup>2</ConditionGroup>
           <ConditionStartOperator>0</ConditionStartOperator>
           <ConditionStartValue>0</ConditionStartValue>
           <ConditionStartValueType>0</ConditionStartValueType>
@@ -1266,7 +1524,7 @@
       <MouseUpOnly>false</MouseUpOnly>
       <MousePassThru>true</MousePassThru>
       <joystickExclusive>false</joystickExclusive>
-      <lastEditedAction>e218e8d0-f9a7-43d1-89fa-9f8df5a533d2</lastEditedAction>
+      <lastEditedAction>69c39915-46ba-4abb-9ed4-e7e03b3e32e8</lastEditedAction>
       <UseProfileProcessOverride>false</UseProfileProcessOverride>
       <ProfileProcessOverrideActiveWindow>false</ProfileProcessOverrideActiveWindow>
       <RepeatIfKeysDown>false</RepeatIfKeysDown>
@@ -1313,7 +1571,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>a5bf57b0-9883-4334-975c-b515f0d80d2d</Id>
+      <Id>32bf363a-0bc4-41cf-8560-ff418cf8311a</Id>
       <CommandString>((EDRouter final_waypoint))</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -1325,7 +1583,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>0dcb9bda-4b93-4c4a-b055-e57c3f82273a</Id>
+          <Id>b3849072-8016-4d6b-acde-d7c5856f482b</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1438,7 +1696,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>e337dd69-b14d-4401-8b92-ba0d92194365</Id>
+      <Id>0f7d5043-62b9-43d7-b4cc-e943496300aa</Id>
       <CommandString>Toggle Auto Waypoint Change</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -1450,7 +1708,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>3d0f57b2-c2f8-4743-ad19-3db7a2565d5a</Id>
+          <Id>715c4381-afff-47e0-a559-941384e76daf</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1570,7 +1828,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>365639e6-2f40-47f5-a8bb-68295a308384</Id>
+      <Id>4da214d8-7029-441c-9558-339eee33781a</Id>
       <CommandString>Auto Waypoint [on;off]</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -1582,7 +1840,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>1496b5a4-6393-4029-a565-caf18b7e0e57</Id>
+          <Id>9fd92cf8-265c-452d-89b3-2248d4037653</Id>
           <ActionType>ConditionStart</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1616,7 +1874,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>aea6b967-e350-4747-851a-2d938d3210e9</Id>
+          <Id>893f3c4c-61b6-46f4-8c67-3faab5b0aa72</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1655,7 +1913,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>b72831f3-17a0-461a-b06c-2ba299112346</Id>
+          <Id>7105abde-4748-4a81-8f6a-1073f09cdd39</Id>
           <ActionType>ConditionElse</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1686,7 +1944,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>922e672b-b0f0-4cd6-afad-77b30db54366</Id>
+          <Id>c394c138-fe20-4acc-80ea-7c474ae98b01</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1725,7 +1983,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>1115bc5e-7fc5-407f-9052-4be1f081be88</Id>
+          <Id>38975ec6-cbd8-46ed-bd64-bd1df1b1aa0d</Id>
           <ActionType>ConditionEnd</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1837,7 +2095,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>67473b7f-ad34-4d12-8703-bf1482e15361</Id>
+      <Id>38b7272c-dab2-42e9-8786-9fbbfbd715b8</Id>
       <CommandString>Reset Current Waypoint</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -1849,7 +2107,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>6934a298-0c5a-4cf4-b09b-35f62cbae9fe</Id>
+          <Id>7f78f0ae-6533-46cf-b4c8-61477f40cfda</Id>
           <ActionType>ConditionStart</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1883,7 +2141,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>3a72d221-3899-4a14-8ad3-e1beae5e4373</Id>
+          <Id>682c5139-207a-4c1d-aef5-9ca9ef327d36</Id>
           <ActionType>SetClipboard</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -1915,7 +2173,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>e7b45f82-d6ba-4d35-a8af-a63f5f4eb9ae</Id>
+          <Id>66564b8a-6c7c-44e5-a8a1-5397df1b8009</Id>
           <ActionType>ConditionEnd</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2027,7 +2285,7 @@
       <LongTapInvoked>false</LongTapInvoked>
       <ShortTapDelayedInvoked>false</ShortTapDelayedInvoked>
       <SleepFlag>0</SleepFlag>
-      <Id>f9e14f49-3ee2-4642-ad9c-98ce448507ff</Id>
+      <Id>b26fce89-73b0-49c7-ac92-57793a64782e</Id>
       <CommandString>previous waypoint</CommandString>
       <ActionSequence>
         <CommandAction>
@@ -2039,7 +2297,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>c8742c96-0717-4cc6-b8aa-82027caf0df2</Id>
+          <Id>2ebaa71e-4f10-4f68-b7b3-84dd7e4891e6</Id>
           <ActionType>ExternalInvoke</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2078,7 +2336,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>30ce2f51-e00e-4d70-9b72-c9295caee824</Id>
+          <Id>7ac49ea3-f7fe-4b38-a959-906b04546923</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2110,7 +2368,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>acbf6cc4-e6aa-4438-96d7-4319cf6a8f0e</Id>
+          <Id>f5a9cf37-def1-48c9-806b-458451a7e9d4</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2142,7 +2400,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>775703fe-5857-49c5-b315-1188d0fc8fbf</Id>
+          <Id>ad4acd4b-056c-443b-8fff-a75d0e8c10aa</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2174,7 +2432,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>32886972-dea1-4d39-8ed0-11a8c5414c8a</Id>
+          <Id>7f892beb-b066-48cb-8cd2-231ca020e20e</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2206,7 +2464,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>36f579da-4cf3-40cb-b7a8-657892a98b94</Id>
+          <Id>e2a89ddc-09ec-4ea9-9335-822674850b0c</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2238,7 +2496,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>63cc01f5-cc20-47da-b8fd-568a89222324</Id>
+          <Id>26f95280-d4ad-4ee3-adfb-4189e99c3ef8</Id>
           <ActionType>WriteToLog</ActionType>
           <Duration>0</Duration>
           <Delay>0</Delay>
@@ -2270,7 +2528,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>36855a02-69e4-4aa2-994e-ff11baf74fd5</Id>
+          <Id>beab1921-4747-4193-92f4-ee05b5a53899</Id>
           <ActionType>Pause</ActionType>
           <Duration>1</Duration>
           <Delay>0</Delay>
@@ -2301,7 +2559,7 @@
           <ConditionSkip>false</ConditionSkip>
           <IsSuffixAction>false</IsSuffixAction>
           <DecimalTransient1>0</DecimalTransient1>
-          <Id>6c2b614f-a469-477c-b213-9ccf8ee113dc</Id>
+          <Id>69931880-c0de-485c-94f2-056ee1271d55</Id>
           <ActionType>PressKey</ActionType>
           <Duration>0.1</Duration>
           <Delay>0</Delay>
@@ -2425,7 +2683,7 @@
   <GlobalJoystickButton2>0</GlobalJoystickButton2>
   <GlobalJoystickNumber2>0</GlobalJoystickNumber2>
   <ReferencedProfile xsi:nil="true" />
-  <ExportVAVersion>1.8.7</ExportVAVersion>
+  <ExportVAVersion>1.8.9</ExportVAVersion>
   <ExportOSVersionMajor>10</ExportOSVersionMajor>
   <ExportOSVersionMinor>0</ExportOSVersionMinor>
   <OverrideConfidence>false</OverrideConfidence>
