@@ -82,8 +82,6 @@ namespace ED_Router.VoiceAttack
 
         private static void SetVariable(ref dynamic vaProxy, Type variableType, string variableName, object value)
         {
-            if(value == null) return;
-
             if (variableType == typeof(int) || variableType == typeof(int?))
             {
                 vaProxy.SetInt($"EDRouter_{variableName}", Convert.ToInt32(value));

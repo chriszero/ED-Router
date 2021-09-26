@@ -80,12 +80,9 @@ namespace ED_Router.Services.Impl
 
         public static async Task<FlightPlan> ParseFlightPlanFromCSV(this StreamReader reader, IDictionary<int, PropertyInfo> headers)
         {
-            var isGalaxyPlotter = headers.Values.Any(x => x.Name == nameof(StarSystem.Refuel));
             var flightPlan = new FlightPlan
             {
-                PlanType = isGalaxyPlotter
-                    ? PlanType.GalaxyPlotterCSV
-                    : PlanType.NeutronPlotterCSV
+                PlanType = PlanType.CSV
             };
 
             var systems = new List<StarSystem>();

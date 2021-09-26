@@ -1,4 +1,6 @@
-﻿namespace ED_Router.Model
+﻿using System.Linq;
+
+namespace ED_Router.Model
 {
     public class FlightPlan
     {
@@ -34,6 +36,6 @@
             }
         }
 
-        public bool RefuelDataAvailable => PlanType == PlanType.GalaxyPlotterAPI || PlanType == PlanType.GalaxyPlotterCSV;
+        public bool RefuelDataAvailable => SystemsInRoute?.Any(x => x.Refuel.HasValue) ?? false;
     }
 }

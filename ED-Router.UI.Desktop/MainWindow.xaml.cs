@@ -43,6 +43,7 @@ namespace ED_Router.UI.Desktop
             }
         }
 
+        // Todo: Do this via a behavior instead of code behind.
         private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             var fp = EdRouter.Instance.FlightPlan;
@@ -62,22 +63,19 @@ namespace ED_Router.UI.Desktop
                     e.Cancel = true;
                 }
             }
-            if (e.PropertyName == nameof(StarSystem.Jumps))
+            if (e.PropertyName == nameof(StarSystem.Jumps) && !(fp.SystemsInRoute?.Any(x => x.Jumps.HasValue) ?? false))
             {
-                if (fp.PlanType != PlanType.NeutronPlotterAPI && fp.PlanType != PlanType.NeutronPlotterCSV)
-                {
-                    e.Cancel = true;
-                }
+                e.Cancel = true;
             }
             if (e.PropertyName == nameof(StarSystem.FuelLeft))
             {
-                if (fp.PlanType != PlanType.GalaxyPlotterCSV && fp.PlanType != PlanType.GalaxyPlotterAPI)
+                if (fp.SystemsInRoute?.Any(x => x.FuelLeft.HasValue) ?? false)
                 {
-                    e.Cancel = true;
+                    e.Column.Header = "Fuel Left";
                 }
                 else
                 {
-                    e.Column.Header = "Fuel Left";
+                    e.Cancel = true;
                 }
             }
             if (e.PropertyName == nameof(StarSystem.HasNeutronStar))
@@ -94,13 +92,14 @@ namespace ED_Router.UI.Desktop
             }
             if (e.PropertyName == nameof(StarSystem.FuelUsed))
             {
-                if (fp.PlanType != PlanType.GalaxyPlotterCSV && fp.PlanType != PlanType.GalaxyPlotterAPI)
+                if (fp.SystemsInRoute?.Any(x => x.FuelLeft.HasValue) ?? false)
                 {
-                    e.Cancel = true;
+                    e.Column.Header = "Fuel cost";
+                    
                 }
                 else
                 {
-                    e.Column.Header = "Fuel cost";
+                    e.Cancel = true;
                 }
             }
         }

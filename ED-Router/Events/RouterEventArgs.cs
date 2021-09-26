@@ -62,6 +62,10 @@ namespace ED_Router.Events
             {
                 @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", flightPlan.Uri));
             }
+            else
+            {
+                @event.EventArgs.Add(VoiceAttackVariable.Create("spansh_uri", "NOT AVAILABLE"));
+            }
 
             return @event;
         }
